@@ -39,7 +39,6 @@ shape.moveTo(0, 0);
 shape.lineTo(0, 1);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
-
 shape.lineTo(0, 0);
 
 const extrudeSettings = {
@@ -97,7 +96,7 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     const vector2 = new THREE.Vector3().subVectors(vertex3, vertex2);
 
     // Oblicz kąt między tymi dwoma wektorami przy użyciu funkcji Math.atan2
-    const angleRadians = Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
+    let angleRadians = Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
 
     // Konwersja kąta z radianów na stopnie
     let angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
@@ -108,7 +107,7 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     }
 
     console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
-    return angleDegrees;
+    return angleRadians < 0 ? angleRadians + Math.PI : angleRadians;
 };
 //#endregion
 
@@ -124,17 +123,30 @@ const createShapeFromPoints = (pointsArray) => {
     scene.add(mesh2);
 };
 
-const radius = 0.1;
+const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wycinającego
 const makeNewShapeWithRoundedCorners = (vertices) => {
     const arr = [];
     for (let i = 0; i < vertices.length; i++) {
         const j = i < vertices.length - 1 ? i + 1 : 0;
+
+        // sprawdzanie kąta
+        let angle;
+        if (i === 0) { // pierwszy wierzchołek
+            angle = calculateAngle(vertices[vertices.length-1], vertices[0], vertices[1]);
+        } else if (i === vertices.length - 1) { // ostatni wierzchołek
+            angle = calculateAngle(vertices[i-1], vertices[i], vertices[0]);
+        } else { // pozostałe
+            angle = calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
+        }
+        const cutPart = Math.abs(radius/Math.sin(angle));
+        console.log("cutPart: ", cutPart);
+        
         // A
         let vectorA = vertices[i];
         let vectorB = vertices[j];
         let displacementVector1 = vectorB.clone().sub(vectorA);
         let normalizeVector1 = displacementVector1.normalize();
-        const point1 = vectorA.clone().addScaledVector(normalizeVector1, radius);
+        const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
         console.log(point1);
         arr.push(point1);
 
@@ -143,34 +155,12 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
         vectorB = vertices[i];
         displacementVector1 = vectorB.clone().sub(vectorA);
         normalizeVector1 = displacementVector1.normalize();
-        const point2 = vectorA.clone().addScaledVector(normalizeVector1, radius);
+        const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
         console.log(point2);
         arr.push(point2);
-        
-        // sprawdzanie kąta
-        if (i === 0) { // pierwszy wierzchołek
-            calculateAngle(vertices[vertices.length-1], vertices[0], vertices[1]);
-        } else if (i === vertices.length - 1) { // ostatni wierzchołek
-            calculateAngle(vertices[i-1], vertices[i], vertices[0]);
-        } else { // pozostałe
-            calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
-        }
     }
     createShapeFromPoints(arr);
     return arr;
-    // // A
-    // let vectorA = shapeVertices[0];
-    // let vectorB = shapeVertices[1];
-    // let displacementVector1 = vectorB.clone().sub(vectorA);
-    // let normalizeVector1 = displacementVector1.normalize();
-    // console.log(vectorA.clone().addScaledVector(normalizeVector1, radius));
-    //
-    // // B
-    // vectorA = shapeVertices[1];
-    // vectorB = shapeVertices[0];
-    // displacementVector1 = vectorB.clone().sub(vectorA);
-    // normalizeVector1 = displacementVector1.normalize();
-    // console.log(vectorA.clone().addScaledVector(normalizeVector1, radius));
 };
 makeNewShapeWithRoundedCorners(shapeVertices);
 //#endregion
