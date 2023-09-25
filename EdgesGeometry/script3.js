@@ -170,8 +170,9 @@ const checkAngle = (vector1, vector2) => {
     const angleRadians = Math.atan2(directionVector.y, directionVector.x);
     const angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
     console.log("angleDegrees: ", angleDegrees);
+    return angleDegrees;
 };
-checkAngle(newShapePoints[3], newShapePoints[4]);
+const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
 // ---------
 
 //#endregion
@@ -203,8 +204,8 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 const createCircle = () => {
     // const circlePoints = generatePointsOnCircle(1, 50);
     // ----
-    const radius = 5; // Promień półokręgu
-    const startAngle = (Math.PI/180)*-30; // Kąt początkowy (0 to północ)
+    const radius = 1; // Promień półokręgu
+    const startAngle = (Math.PI/180)*/*-30*/angleCornerValue; // Kąt początkowy (0 to północ)
     const center = new THREE.Vector2(0, 0); // Środek okręgu
     const segments = 36; // Ilość segmentów
     const circlePoints = generatePointsOnSemicircle(radius, startAngle, center, segments);
