@@ -90,10 +90,6 @@ console.log(shapeVertices);
 //#region Kąt między krawędziami
 // Przykładowe wierzchołki na płaszczyźnie XY
 const calculateAngle = (vertex1, vertex2, vertex3) => {
-    // const vertex1 = new THREE.Vector3(1, 1, 0);
-    // const vertex2 = new THREE.Vector3(1, 0, 0);
-    // const vertex3 = new THREE.Vector3(0, 0, 0);
-
     // Oblicz wektor między pierwszym a drugim wierzchołkiem
     const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
 
