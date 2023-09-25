@@ -129,7 +129,7 @@ const makeNewShapeWithRoundedCorners = () => {
     // console.log(vectorA.clone().addScaledVector(normalizeVector1, radius));
 };
 const newPoints = makeNewShapeWithRoundedCorners();
-const shape2 = new THREE.Shape();;
+const shape2 = new THREE.Shape();
 // Dodawanie punktów do kształtu
 shape2.moveTo(newPoints[0].x, newPoints[0].y);
 newPoints.forEach(({x, y}) => shape2.lineTo(x, y));
