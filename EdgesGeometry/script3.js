@@ -176,8 +176,28 @@ function generatePointsOnCircle(radius, segments) {
     }
     return points;
 }
+
+function generatePointsOnSemicircle(radius, startAngle, center, segments) {
+    const points = [];
+
+    for (let i = 0; i <= segments; i++) {
+        const angle = startAngle + (i / segments) * Math.PI; // Kąt od początku do połowy okręgu
+        const x = center.x + radius * Math.cos(angle);
+        const y = center.y + radius * Math.sin(angle);
+        points.push(new THREE.Vector2(x, y));
+    }
+
+    return points;
+}
 const createCircle = () => {
-    const circlePoints = generatePointsOnCircle(1, 50);
+    // const circlePoints = generatePointsOnCircle(1, 50);
+    // ----
+    const radius = 5; // Promień półokręgu
+    const startAngle = (Math.PI/180)*-45; // Kąt początkowy (0 to północ)
+    const center = new THREE.Vector2(0, 0); // Środek okręgu
+    const segments = 36; // Ilość segmentów
+    const circlePoints = generatePointsOnSemicircle(radius, startAngle, center, segments);
+    // ----
     const shape = new THREE.Shape();
     shape.moveTo(circlePoints[0].x, circlePoints[0].y);
     circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
