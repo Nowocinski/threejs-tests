@@ -90,14 +90,25 @@ console.log(shapeVertices);
 //#endregion
 
 //#region Modyfikacja wierzchołków
+const createShapeFromPoints = (pointsArray) => {
+    const shape2 = new THREE.Shape();
+    // Dodawanie punktów do kształtu
+    shape2.moveTo(pointsArray[0].x, pointsArray[0].y);
+    pointsArray.forEach(({x, y}) => shape2.lineTo(x, y));
+    const geometry2 = new THREE.ExtrudeGeometry(shape2, extrudeSettings);
+    // Tworzenie materiału i meshu
+    const mesh2 = new THREE.Mesh(geometry2, material);
+    scene.add(mesh2);
+};
+
 const radius = 0.1;
-const makeNewShapeWithRoundedCorners = () => {
+const makeNewShapeWithRoundedCorners = (vertices) => {
     const arr = [];
-    for (let i = 0; i < shapeVertices.length; i++) {
-        const j = i < shapeVertices.length - 1 ? i + 1 : 0;
+    for (let i = 0; i < vertices.length; i++) {
+        const j = i < vertices.length - 1 ? i + 1 : 0;
         // A
-        let vectorA = shapeVertices[i];
-        let vectorB = shapeVertices[j];
+        let vectorA = vertices[i];
+        let vectorB = vertices[j];
         let displacementVector1 = vectorB.clone().sub(vectorA);
         let normalizeVector1 = displacementVector1.normalize();
         const point1 = vectorA.clone().addScaledVector(normalizeVector1, radius);
@@ -105,14 +116,15 @@ const makeNewShapeWithRoundedCorners = () => {
         arr.push(point1);
 
         // B
-        vectorA = shapeVertices[j];
-        vectorB = shapeVertices[i];
+        vectorA = vertices[j];
+        vectorB = vertices[i];
         displacementVector1 = vectorB.clone().sub(vectorA);
         normalizeVector1 = displacementVector1.normalize();
         const point2 = vectorA.clone().addScaledVector(normalizeVector1, radius);
         console.log(point2);
         arr.push(point2);
     }
+    createShapeFromPoints(arr);
     return arr;
     // // A
     // let vectorA = shapeVertices[0];
@@ -128,15 +140,7 @@ const makeNewShapeWithRoundedCorners = () => {
     // normalizeVector1 = displacementVector1.normalize();
     // console.log(vectorA.clone().addScaledVector(normalizeVector1, radius));
 };
-const newPoints = makeNewShapeWithRoundedCorners();
-const shape2 = new THREE.Shape();
-// Dodawanie punktów do kształtu
-shape2.moveTo(newPoints[0].x, newPoints[0].y);
-newPoints.forEach(({x, y}) => shape2.lineTo(x, y));
-const geometry2 = new THREE.ExtrudeGeometry(shape2, extrudeSettings);
-// Tworzenie materiału i meshu
-const mesh2 = new THREE.Mesh(geometry2, material);
-scene.add(mesh2);
+makeNewShapeWithRoundedCorners(shapeVertices);
 //#endregion
 
 function animate() {
