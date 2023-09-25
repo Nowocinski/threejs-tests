@@ -143,6 +143,36 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
 makeNewShapeWithRoundedCorners(shapeVertices);
 //#endregion
 
+//#region Kąt między krawędziami
+// Przykładowe wierzchołki na płaszczyźnie XY
+const calculateAngle = () => {
+    const vertex1 = new THREE.Vector3(1, 1, 0);
+    const vertex2 = new THREE.Vector3(1, 0, 0);
+    const vertex3 = new THREE.Vector3(0, 0, 0);
+
+    // Oblicz wektor między pierwszym a drugim wierzchołkiem
+    const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
+
+    // Oblicz wektor między trzecim a drugim wierzchołkiem
+    const vector2 = new THREE.Vector3().subVectors(vertex3, vertex2);
+
+    // Oblicz kąt między tymi dwoma wektorami przy użyciu funkcji Math.atan2
+    const angleRadians = Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
+
+    // Konwersja kąta z radianów na stopnie
+    let angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
+
+    // Uzyskaj wartość dodatnią kąta, aby mieć wynik między 0 a 360 stopni
+    if (angleDegrees < 0) {
+        angleDegrees += 360;
+    }
+
+    console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
+    return angleDegrees;
+};
+calculateAngle();
+//#endregion
+
 function animate() {
     renderer.render(scene, camera);
 }
