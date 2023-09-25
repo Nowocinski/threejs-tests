@@ -162,7 +162,18 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
     createShapeFromPoints(arr);
     return arr;
 };
-makeNewShapeWithRoundedCorners(shapeVertices);
+
+const newShapePoints = makeNewShapeWithRoundedCorners(shapeVertices);
+// ---------
+const checkAngle = (vector1, vector2) => {
+    const directionVector = new THREE.Vector2(vector2.x - vector1.x, vector2.y - vector1.y);
+    const angleRadians = Math.atan2(directionVector.y, directionVector.x);
+    const angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
+    console.log("angleDegrees: ", angleDegrees);
+};
+checkAngle(newShapePoints[3], newShapePoints[4]);
+// ---------
+
 //#endregion
 
 //#region Koło
@@ -193,7 +204,7 @@ const createCircle = () => {
     // const circlePoints = generatePointsOnCircle(1, 50);
     // ----
     const radius = 5; // Promień półokręgu
-    const startAngle = (Math.PI/180)*-45; // Kąt początkowy (0 to północ)
+    const startAngle = (Math.PI/180)*-30; // Kąt początkowy (0 to północ)
     const center = new THREE.Vector2(0, 0); // Środek okręgu
     const segments = 36; // Ilość segmentów
     const circlePoints = generatePointsOnSemicircle(radius, startAngle, center, segments);
