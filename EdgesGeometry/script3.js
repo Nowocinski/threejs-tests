@@ -165,6 +165,29 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
 makeNewShapeWithRoundedCorners(shapeVertices);
 //#endregion
 
+//#region Koło
+function generatePointsOnCircle(radius, segments) {
+    const points = [];
+    for (let i = 0; i < segments; i++) {
+        const theta = (i / segments) * Math.PI * 2;
+        const x = radius * Math.cos(theta);
+        const y = radius * Math.sin(theta);
+        points.push(new THREE.Vector2(x, y));
+    }
+    return points;
+}
+const createCircle = () => {
+    const circlePoints = generatePointsOnCircle(1, 50);
+    const shape = new THREE.Shape();
+    shape.moveTo(circlePoints[0].x, circlePoints[0].y);
+    circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
+    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh.translateY(3));
+};
+createCircle();
+//#endregion
+
 function animate() {
     renderer.render(scene, camera);
 }
