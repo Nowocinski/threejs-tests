@@ -187,7 +187,7 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
         points.push(new THREE.Vector2(x, y));
     }
 
-    return points;
+    return points.reverse();
 }
 const createCircle = () => {
     // const circlePoints = generatePointsOnCircle(1, 50);
