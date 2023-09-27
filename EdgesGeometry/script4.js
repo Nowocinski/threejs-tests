@@ -202,7 +202,7 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 
     return points.reverse();
 }
-const createCircle = (v1, v2) => {
+const roundCorner = (v1, v2) => {
     const distanceBetweenVectors = v1.distanceTo(v2);
     console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
     const angleCornerValue = checkAngle(v1, v2);
@@ -237,9 +237,9 @@ const roundCorners = () => {
     if (newShapePoints.length < 2) {
         return new Error("Nieprawidłowe dane");
     }
-    createCircle(newShapePoints[newShapePoints.length - 1], newShapePoints[0]);
+    roundCorner(newShapePoints[newShapePoints.length - 1], newShapePoints[0]);
     for (let i = 2; i < newShapePoints.length; i += 2) {
-        createCircle(newShapePoints[i - 1], newShapePoints[i]);
+        roundCorner(newShapePoints[i - 1], newShapePoints[i]);
     }
 };
 roundCorners();
