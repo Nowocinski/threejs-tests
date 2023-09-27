@@ -32,6 +32,17 @@ const axesHelper = new THREE.AxesHelper(4);
 scene.add(axesHelper);
 
 //#region Poligon
+//#region #0 Helpers
+const applyTransformation = (object) => {
+    object.updateMatrix();
+    object.geometry.applyMatrix4(object.matrix);
+    object.position.set(0, 0, 0);
+    object.rotation.set(0, 0, 0);
+    object.scale.set(1, 1, 1);
+    object.updateMatrix();
+}
+
+//#endregion
 //#region #1 Pierwotny obiekt
 const shape = new THREE.Shape();
 shape.moveTo(0, 0);
@@ -193,22 +204,32 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 
     return points.reverse();
 }
-
+const distanceBetweenVectors = newShapePoints[5].distanceTo(newShapePoints[6]);
+console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
 const createCircle = () => {
     // const radius = 1; // Promień półokręgu
-    const startAngle = (Math.PI/180)*angleCornerValue; // Kąt początkowy (0 to północ)
-    const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
-    // const center = new THREE.Vector2(0,0); // Środek okręgu
+    const startAngle = /*(Math.PI/180)*angleCornerValue*/0; // Kąt początkowy (0 to północ)
+    // const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
+    const center = new THREE.Vector2(0,0); // Środek okręgu
     const segments = 36; // Ilość segmentów
-    const circlePoints = generatePointsOnSemicircle(radius/2, startAngle, center, segments);
-    // ----
+    const circlePoints = generatePointsOnSemicircle(distanceBetweenVectors/2, startAngle, center, segments);
     const shape = new THREE.Shape();
     shape.moveTo(circlePoints[0].x, circlePoints[0].y);
     circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const mesh = new THREE.Mesh(
         geometry,
-        /*material*/new THREE.MeshBasicMaterial({color: 0xff0000}));
+        new THREE.MeshBasicMaterial({color: 0xff0000}));
+        // skalowanie wysokości
+        mesh
+            .scale.setY(0.3);
+        // pozycjonowanie
+        mesh
+        .translateX((newShapePoints[5].x + newShapePoints[6].x)/2)
+        .translateY((newShapePoints[5].y + newShapePoints[6].y)/2);
+    mesh.
+        rotateZ((Math.PI/180)*angleCornerValue);
+    applyTransformation(mesh);
     scene.add(mesh);
 };
 createCircle();
