@@ -87,6 +87,7 @@ const createShapeFromPoints = (pointsArray) => {
     const shape = new THREE.Shape();
     // Dodawanie punktów do kształtu
     shape.moveTo(pointsArray[0].x, pointsArray[0].y);
+    // shape.moveTo(Math.max(...pointsArray.map(({x}) => x)), Math.max(...pointsArray.map(({y}) => y)));
     pointsArray.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     // Tworzenie materiału i meshu
@@ -94,6 +95,12 @@ const createShapeFromPoints = (pointsArray) => {
     scene.add(mesh2);
 };
 
+/**
+ * Mara kąta między trzema wierzchołkami
+ *
+ * @param   whatsit  The whatsit to use (or whatever).
+ * @returns A useful value.
+ */
 const calculateAngle = (vertex1, vertex2, vertex3) => {
     // Oblicz wektor między pierwszym a drugim wierzchołkiem
     const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
@@ -158,6 +165,22 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
     return arr;
 };
 const newShapePoints = makeNewShapeWithRoundedCorners(shapeVertices);
+//#endregion
+//#region #5 sprawdzenie kąta między wyciętymi rogami
+/**
+ * Mara kąta między dwoma wierzchołkami
+ *
+ * @param   whatsit  The whatsit to use (or whatever).
+ * @returns A useful value.
+ */
+const checkAngle = (vector1, vector2) => {
+    const directionVector = new THREE.Vector2(vector2.x - vector1.x, vector2.y - vector1.y);
+    const angleRadians = Math.atan2(directionVector.y, directionVector.x);
+    const angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
+    return angleDegrees;
+};
+const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
+console.log("angleCornerValue: ", angleCornerValue);
 //#endregion
 //#endregion
 
