@@ -206,7 +206,9 @@ const createCircle = () => {
     shape.moveTo(circlePoints[0].x, circlePoints[0].y);
     circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-    const mesh = new THREE.Mesh(geometry, /*material*/new THREE.MeshBasicMaterial({color: 0xff0000}));
+    const mesh = new THREE.Mesh(
+        geometry,
+        /*material*/new THREE.MeshBasicMaterial({color: 0xff0000}));
     scene.add(mesh);
 };
 createCircle();
