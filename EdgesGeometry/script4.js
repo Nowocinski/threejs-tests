@@ -234,6 +234,9 @@ const createCircle = (v1, v2) => {
     scene.add(mesh);
 };
 createCircle(newShapePoints[5], newShapePoints[6]);
+createCircle(newShapePoints[3], newShapePoints[4]);
+createCircle(newShapePoints[1], newShapePoints[2]);
+createCircle(newShapePoints[7], newShapePoints[0]);
 //#endregion
 //#endregion
 
