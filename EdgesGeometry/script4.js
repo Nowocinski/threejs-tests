@@ -202,15 +202,15 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 
     return points.reverse();
 }
-const createCircle = () => {
-    const distanceBetweenVectors = newShapePoints[5].distanceTo(newShapePoints[6]);
+const createCircle = (v1, v2) => {
+    const distanceBetweenVectors = v1.distanceTo(v2);
     console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
-    const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
+    const angleCornerValue = checkAngle(v1, v2);
     console.log("angleCornerValue: ", angleCornerValue);
     
     // const radius = 1; // Promień półokręgu
     const startAngle = /*(Math.PI/180)*angleCornerValue*/0; // Kąt początkowy (0 to północ)
-    // const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
+    // const center = new THREE.Vector2((v1.x + v2.x)/2, (v1.y + v2.y)/2);
     const center = new THREE.Vector2(0,0); // Środek okręgu
     const segments = 36; // Ilość segmentów
     const circlePoints = generatePointsOnSemicircle(distanceBetweenVectors/2, startAngle, center, segments);
@@ -226,14 +226,14 @@ const createCircle = () => {
             .scale.setY(0.3);
         // pozycjonowanie
         mesh
-        .translateX((newShapePoints[5].x + newShapePoints[6].x)/2)
-        .translateY((newShapePoints[5].y + newShapePoints[6].y)/2);
+        .translateX((v1.x + v2.x)/2)
+        .translateY((v1.y + v2.y)/2);
     mesh.
         rotateZ((Math.PI/180)*angleCornerValue);
     applyTransformation(mesh);
     scene.add(mesh);
 };
-createCircle();
+createCircle(newShapePoints[5], newShapePoints[6]);
 //#endregion
 //#endregion
 
