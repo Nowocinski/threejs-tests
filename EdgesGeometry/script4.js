@@ -233,10 +233,16 @@ const createCircle = (v1, v2) => {
     applyTransformation(mesh);
     scene.add(mesh);
 };
-createCircle(newShapePoints[5], newShapePoints[6]);
-createCircle(newShapePoints[3], newShapePoints[4]);
-createCircle(newShapePoints[1], newShapePoints[2]);
-createCircle(newShapePoints[7], newShapePoints[0]);
+const roundCorners = () => {
+    if (newShapePoints.length < 2) {
+        return new Error("Nieprawidłowe dane");
+    }
+    createCircle(newShapePoints[newShapePoints.length - 1], newShapePoints[0]);
+    for (let i = 2; i < newShapePoints.length; i += 2) {
+        createCircle(newShapePoints[i - 1], newShapePoints[i]);
+    }
+};
+roundCorners();
 //#endregion
 //#endregion
 
