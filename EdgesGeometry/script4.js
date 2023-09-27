@@ -81,7 +81,6 @@ const getVertices = () => {
 const shapeVertices = getVertices();
 console.log(shapeVertices);
 //#endregion
-
 //#region #3 Modyfikacja wierzchołków
 const createShapeFromPoints = (pointsArray) => {
     const shape = new THREE.Shape();
@@ -123,7 +122,6 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     return angleRadians < 0 ? angleRadians + Math.PI : angleRadians;
 };
 //#endregion
-
 //#region #4 Tworzenie bryły na podstawie zmodyfikowanych wierzchołków
 const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wycinającego
 const makeNewShapeWithRoundedCorners = (vertices) => {
@@ -181,6 +179,36 @@ const checkAngle = (vector1, vector2) => {
 };
 const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
 console.log("angleCornerValue: ", angleCornerValue);
+//#endregion
+//#region #6 Stworzenie półokręgu do uciętego fragmentu rogu
+function generatePointsOnSemicircle(radius, startAngle, center, segments) {
+    const points = [];
+
+    for (let i = 0; i <= segments; i++) {
+        const angle = startAngle + (i / segments) * Math.PI; // Kąt od początku do połowy okręgu
+        const x = center.x + radius * Math.cos(angle);
+        const y = center.y + radius * Math.sin(angle);
+        points.push(new THREE.Vector2(x, y));
+    }
+
+    return points.reverse();
+}
+
+const createCircle = () => {
+    const radius = 1; // Promień półokręgu
+    const startAngle = (Math.PI/180)*angleCornerValue; // Kąt początkowy (0 to północ)
+    const center = new THREE.Vector2(0, 0); // Środek okręgu
+    const segments = 36; // Ilość segmentów
+    const circlePoints = generatePointsOnSemicircle(radius, startAngle, center, segments);
+    // ----
+    const shape = new THREE.Shape();
+    shape.moveTo(circlePoints[0].x, circlePoints[0].y);
+    circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
+    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh.translateY(3));
+};
+createCircle();
 //#endregion
 //#endregion
 
