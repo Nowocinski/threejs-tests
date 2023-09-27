@@ -204,9 +204,9 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 
     return points.reverse();
 }
-const distanceBetweenVectors = newShapePoints[5].distanceTo(newShapePoints[6]);
-console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
 const createCircle = () => {
+    const distanceBetweenVectors = newShapePoints[5].distanceTo(newShapePoints[6]);
+    console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
     // const radius = 1; // Promień półokręgu
     const startAngle = /*(Math.PI/180)*angleCornerValue*/0; // Kąt początkowy (0 to północ)
     // const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
