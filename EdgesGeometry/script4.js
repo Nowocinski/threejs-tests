@@ -188,8 +188,6 @@ const checkAngle = (vector1, vector2) => {
     const angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
     return angleDegrees;
 };
-const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
-console.log("angleCornerValue: ", angleCornerValue);
 //#endregion
 //#region #6 Stworzenie półokręgu do uciętego fragmentu rogu
 function generatePointsOnSemicircle(radius, startAngle, center, segments) {
@@ -207,6 +205,9 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 const createCircle = () => {
     const distanceBetweenVectors = newShapePoints[5].distanceTo(newShapePoints[6]);
     console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
+    const angleCornerValue = checkAngle(newShapePoints[5], newShapePoints[6]);
+    console.log("angleCornerValue: ", angleCornerValue);
+    
     // const radius = 1; // Promień półokręgu
     const startAngle = /*(Math.PI/180)*angleCornerValue*/0; // Kąt początkowy (0 to północ)
     // const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
