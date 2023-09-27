@@ -164,7 +164,7 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
 };
 const newShapePoints = makeNewShapeWithRoundedCorners(shapeVertices);
 //#endregion
-//#region #5 sprawdzenie kąta między wyciętymi rogami
+//#region #5 Sprawdzenie kąta między wyciętymi rogami
 /**
  * Mara kąta między dwoma wierzchołkami
  *
@@ -195,18 +195,19 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 }
 
 const createCircle = () => {
-    const radius = 1; // Promień półokręgu
+    // const radius = 1; // Promień półokręgu
     const startAngle = (Math.PI/180)*angleCornerValue; // Kąt początkowy (0 to północ)
-    const center = new THREE.Vector2(0, 0); // Środek okręgu
+    const center = new THREE.Vector2((newShapePoints[5].x + newShapePoints[6].x)/2, (newShapePoints[5].y + newShapePoints[6].y)/2);
+    // const center = new THREE.Vector2(0,0); // Środek okręgu
     const segments = 36; // Ilość segmentów
-    const circlePoints = generatePointsOnSemicircle(radius, startAngle, center, segments);
+    const circlePoints = generatePointsOnSemicircle(radius/2, startAngle, center, segments);
     // ----
     const shape = new THREE.Shape();
     shape.moveTo(circlePoints[0].x, circlePoints[0].y);
     circlePoints.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh.translateY(3));
+    scene.add(mesh);
 };
 createCircle();
 //#endregion
