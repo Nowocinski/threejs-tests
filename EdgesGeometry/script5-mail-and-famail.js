@@ -183,7 +183,7 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
                 console.log(newPositionA);
                 arr2.push(newPositionA);
 
-                // arr2.push(vertices[i]);
+                arr2.push(vertices[i]);
         }
 
         //     // A
@@ -225,7 +225,7 @@ const checkAngle = (vector1, vector2) => {
 };
 //#endregion
 //#region #6 Stworzenie półokręgu do uciętego fragmentu rogu
-function generatePointsOnSemicircle(radius, startAngle, center, segments) {
+const generatePointsOnSemicircle = (radius, startAngle, center, segments) => {
     const points = [];
 
     for (let i = 0; i <= segments; i++) {
@@ -236,8 +236,9 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
     }
 
     return points.reverse();
-}
-const roundCorner = (v1, v2) => {
+};
+
+const roundCorner = (v1, v2, v3 = undefined) => {
     const distanceBetweenVectors = v1.distanceTo(v2);
     const angleCornerValue = checkAngle(v1, v2);
 
@@ -265,6 +266,23 @@ const roundCorner = (v1, v2) => {
     rotateZ((Math.PI/180)*angleCornerValue);
     applyTransformation(mesh);
     scene.add(mesh);
+    
+    // ==================================================================================================================
+    
+    if (v3 === undefined) {
+        return;
+    }
+    
+    const triangleShape = new THREE.Shape();
+    triangleShape.moveTo(v3.x, v3.y);
+    triangleShape.lineTo(v1.x, v1.y);
+    triangleShape.lineTo(v2.x, v2.y);
+    triangleShape.lineTo(v3.x, v3.y);
+    const triangleMesh = new THREE.Mesh(
+        new THREE.ExtrudeGeometry(triangleShape, extrudeSettings),
+        new THREE.MeshBasicMaterial({color: 0x0000ff})
+    );
+    scene.add(triangleMesh);
 };
 const roundCorners = () => {
     if (newShapePoints.length < 2) {
@@ -275,8 +293,8 @@ const roundCorners = () => {
     //     roundCorner(newShapePoints[i - 1], newShapePoints[i]);
     // }
     console.log("arr2: ", arr2);
-    for (let i = 0; i < arr2.length; i += 2) {
-        roundCorner(arr2[i], arr2[i+1]);
+    for (let i = 0; i < arr2.length; i += 3) {
+        roundCorner(arr2[i], arr2[i+1], arr2[i+2]);
     }
 };
 roundCorners();
