@@ -136,6 +136,7 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
 //#endregion
 //#region #4 Tworzenie bryły na podstawie zmodyfikowanych wierzchołków
 const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wycinającego
+const arr2 = [];
 //!!!
 const makeNewShapeWithRoundedCorners = (vertices) => {
     const arr = [];
@@ -168,6 +169,7 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
                 let newPositionA = new THREE.Vector3();
                 newPositionA.addVectors(vectorA, directionVector);
                 console.log(newPositionA);
+                arr2.push(newPositionA);
 
                 // B
                 vectorA = vertices[i];
@@ -179,6 +181,9 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
                 newPositionA = new THREE.Vector3();
                 newPositionA.addVectors(vectorA, directionVector);
                 console.log(newPositionA);
+                arr2.push(newPositionA);
+
+                // arr2.push(vertices[i]);
         }
 
         //     // A
@@ -265,9 +270,13 @@ const roundCorners = () => {
     if (newShapePoints.length < 2) {
         return new Error("Nieprawidłowe dane");
     }
-    roundCorner(newShapePoints[newShapePoints.length - 1], newShapePoints[0]);
-    for (let i = 2; i < newShapePoints.length; i += 2) {
-        roundCorner(newShapePoints[i - 1], newShapePoints[i]);
+    // roundCorner(newShapePoints[newShapePoints.length - 1], newShapePoints[0]);
+    // for (let i = 2; i < newShapePoints.length; i += 2) {
+    //     roundCorner(newShapePoints[i - 1], newShapePoints[i]);
+    // }
+    console.log("arr2: ", arr2);
+    for (let i = 0; i < arr2.length; i += 2) {
+        roundCorner(arr2[i], arr2[i+1]);
     }
 };
 roundCorners();
