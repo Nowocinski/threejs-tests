@@ -140,7 +140,8 @@ const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wy
 const makeNewShapeWithRoundedCorners = (vertices) => {
     const arr = [];
     for (let i = 0; i < vertices.length; i++) {
-        const j = i < vertices.length - 1 ? i + 1 : 0;
+        const nextPoint = i < vertices.length - 1 ? i + 1 : 0;
+        const previousPoint = i === 0 ? vertices.length - 1 : i - 1;
 
         // sprawdzanie kąta
         let angle, angleInDegrees;
@@ -159,20 +160,25 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
 
                 // A
                 let vectorA = vertices[i];
-                let vectorB = vertices[j];
-                let displacementVector1 = vectorB.clone().sub(vectorA);
-                let normalizeVector1 = displacementVector1.normalize();
-                const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-                // arr.push(point1);
+                let vectorB = vertices[nextPoint];
+                let directionVector = new THREE.Vector3();
+                directionVector.subVectors(vectorB, vectorA);
+                directionVector.normalize();
+                directionVector.multiplyScalar(cutPart);
+                let newPositionA = new THREE.Vector3();
+                newPositionA.addVectors(vectorA, directionVector);
+                console.log(newPositionA);
 
                 // B
-                vectorA = vertices[j];
-                vectorB = vertices[i];
-                displacementVector1 = vectorB.clone().sub(vectorA);
-                normalizeVector1 = displacementVector1.normalize();
-                const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-                // arr.push(point2);
-                console.log(point1, point2);
+                vectorA = vertices[i];
+                vectorB = vertices[previousPoint];
+                directionVector = new THREE.Vector3();
+                directionVector.subVectors(vectorB, vectorA);
+                directionVector.normalize();
+                directionVector.multiplyScalar(cutPart);
+                newPositionA = new THREE.Vector3();
+                newPositionA.addVectors(vectorA, directionVector);
+                console.log(newPositionA);
         }
 
         //     // A
