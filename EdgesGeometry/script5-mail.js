@@ -185,22 +185,6 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
                 arr2.push(vertices[i]);
         }
 
-        //     // A
-        //     let vectorA = vertices[i];
-        //     let vectorB = vertices[j];
-        //     let displacementVector1 = vectorB.clone().sub(vectorA);
-        //     let normalizeVector1 = displacementVector1.normalize();
-        //     const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        //     arr.push(point1);
-        //
-        //     // B
-        //     vectorA = vertices[j];
-        //     vectorB = vertices[i];
-        //     displacementVector1 = vectorB.clone().sub(vectorA);
-        //     normalizeVector1 = displacementVector1.normalize();
-        //     const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        //     arr.push(point2);
-
         arr.push(vertices[i]);
     }
     console.log(arr);
