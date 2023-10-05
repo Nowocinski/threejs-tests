@@ -47,7 +47,7 @@ const applyTransformation = (object) => {
 const shape = new THREE.Shape();
 shape.moveTo(0, 0);
 shape.lineTo(0, 1);
-shape.lineTo(0.5, 0.5);
+shape.moveTo(0.5, 0.5);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
 shape.lineTo(0, 0);
@@ -136,13 +136,11 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
 //#region #4 Tworzenie bryły na podstawie zmodyfikowanych wierzchołków
 const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wycinającego
 const makeNewShapeWithRoundedCorners = (vertices) => {
-    console.log(vertices);
     const arr = [];
     for (let i = 0; i < vertices.length; i++) {
-        const j = i < vertices.length - 1 ? i + 1 : 0; // następny wektor po wektorze o numerze i
+        const j = i < vertices.length - 1 ? i + 1 : 0;
 
         // sprawdzanie kąta
-        // !!!1
         let angle;
         if (i === 0) { // pierwszy wierzchołek
             angle = calculateAngle(vertices[vertices.length-1], vertices[0], vertices[1]);
@@ -151,15 +149,6 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
         } else { // pozostałe
             angle = calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
         }
-        
-        console.log("angle: ", angle);
-        
-        // Brak zaokrąglenia dla kątów większych niz 90 stopni - zielone linie - male
-        if (angle <= Math.PI/2) {
-            console.log("Kąt mniejszy lub równy niz 90 stopni!!!");
-            arr.push(vertices[i])
-        }
-        
         const cutPart = Math.abs(radius/Math.sin(angle));
 
         // A
@@ -213,7 +202,6 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 const roundCorner = (v1, v2) => {
     const distanceBetweenVectors = v1.distanceTo(v2);
     const angleCornerValue = checkAngle(v1, v2);
-    console.log("angleCornerValue: ", angleCornerValue);
 
     // const radius = 1; // Promień półokręgu
     const startAngle = /*(Math.PI/180)*angleCornerValue*/0; // Kąt początkowy (0 to północ)
