@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import * as dat from 'dat.gui';
 
 const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -47,7 +48,7 @@ const applyTransformation = (object) => {
 const shape = new THREE.Shape();
 shape.moveTo(0, 0);
 shape.lineTo(0, 1);
-shape.moveTo(0.5, 0.5);
+// shape.moveTo(0.5, 0.5);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
 shape.lineTo(0, 0);
@@ -252,3 +253,8 @@ window.addEventListener('resize', function() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+//#region dat.gui
+const gui = new dat.GUI();
+gui.add(material, "wireframe");
+//#endregion
