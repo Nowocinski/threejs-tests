@@ -48,7 +48,7 @@ const applyTransformation = (object) => {
 const shape = new THREE.Shape();
 shape.moveTo(0, 0);
 shape.lineTo(0, 1);
-// shape.moveTo(0.5, 0.5);
+shape.moveTo(0.5, 0.5);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
 shape.lineTo(0, 0);
@@ -97,7 +97,7 @@ const shapeVertices = getVertices();
 const createShapeFromPoints = (pointsArray) => {
     const shape = new THREE.Shape();
     // Dodawanie punktów do kształtu
-    shape.moveTo(pointsArray[0].x, pointsArray[0].y);
+    shape.moveTo(0.5, 0.5); // TODO: Poprawić
     // shape.moveTo(Math.max(...pointsArray.map(({x}) => x)), Math.max(...pointsArray.map(({y}) => y)));
     pointsArray.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -131,43 +131,69 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     }
 
     console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
-    return angleRadians < 0 ? angleRadians + Math.PI : angleRadians;
+    return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
 };
 //#endregion
 //#region #4 Tworzenie bryły na podstawie zmodyfikowanych wierzchołków
 const radius = 0.1; // kąt zaokrąglenia - promień zaokrąglenia mechanizmu wycinającego
+//!!!
 const makeNewShapeWithRoundedCorners = (vertices) => {
     const arr = [];
     for (let i = 0; i < vertices.length; i++) {
         const j = i < vertices.length - 1 ? i + 1 : 0;
 
         // sprawdzanie kąta
-        let angle;
+        let angle, angleInDegrees;
         if (i === 0) { // pierwszy wierzchołek
-            angle = calculateAngle(vertices[vertices.length-1], vertices[0], vertices[1]);
+            [angle, angleInDegrees] = calculateAngle(vertices[vertices.length-1], vertices[0], vertices[1]);
         } else if (i === vertices.length - 1) { // ostatni wierzchołek
-            angle = calculateAngle(vertices[i-1], vertices[i], vertices[0]);
+            [angle, angleInDegrees] = calculateAngle(vertices[i-1], vertices[i], vertices[0]);
         } else { // pozostałe
-            angle = calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
+            [angle, angleInDegrees] = calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
         }
         const cutPart = Math.abs(radius/Math.sin(angle));
+        console.log("angleInDegrees: ", angleInDegrees);
 
-        // A
-        let vectorA = vertices[i];
-        let vectorB = vertices[j];
-        let displacementVector1 = vectorB.clone().sub(vectorA);
-        let normalizeVector1 = displacementVector1.normalize();
-        const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        arr.push(point1);
+        if (angleInDegrees > 180) {
+            console.log("!!!", angleInDegrees, vertices[i]);
 
-        // B
-        vectorA = vertices[j];
-        vectorB = vertices[i];
-        displacementVector1 = vectorB.clone().sub(vectorA);
-        normalizeVector1 = displacementVector1.normalize();
-        const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        arr.push(point2);
+                // A
+                let vectorA = vertices[i];
+                let vectorB = vertices[j];
+                let displacementVector1 = vectorB.clone().sub(vectorA);
+                let normalizeVector1 = displacementVector1.normalize();
+                const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
+                // arr.push(point1);
+
+                // B
+                vectorA = vertices[j];
+                vectorB = vertices[i];
+                displacementVector1 = vectorB.clone().sub(vectorA);
+                normalizeVector1 = displacementVector1.normalize();
+                const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
+                // arr.push(point2);
+                console.log(point1, point2);
+        }
+
+        //     // A
+        //     let vectorA = vertices[i];
+        //     let vectorB = vertices[j];
+        //     let displacementVector1 = vectorB.clone().sub(vectorA);
+        //     let normalizeVector1 = displacementVector1.normalize();
+        //     const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
+        //     arr.push(point1);
+        //
+        //     // B
+        //     vectorA = vertices[j];
+        //     vectorB = vertices[i];
+        //     displacementVector1 = vectorB.clone().sub(vectorA);
+        //     normalizeVector1 = displacementVector1.normalize();
+        //     const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
+        //     arr.push(point2);
+
+        arr.push(vertices[i]);
     }
+    console.log(arr);
     createShapeFromPoints(arr);
     return arr;
 };
