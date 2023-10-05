@@ -51,6 +51,7 @@ shape.lineTo(0, 1);
 shape.moveTo(0.3, 0.3);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
+shape.moveTo(0.2, 0.2);
 shape.lineTo(0, 0);
 
 const extrudeSettings = {
