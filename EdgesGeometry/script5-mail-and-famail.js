@@ -90,7 +90,6 @@ const getVertices = () => {
     return Array.from(uniqueVerticesMap.values());
 };
 const shapeVertices = getVertices();
-console.log(shapeVertices);
 //#endregion
 //#region #3 Modyfikacja wierzchołków
 const createShapeFromPoints = (pointsArray) => {
@@ -150,7 +149,6 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
             angle = calculateAngle(vertices[i-1], vertices[i], vertices[i+1]);
         }
         const cutPart = Math.abs(radius/Math.sin(angle));
-        console.log("cutPart: ", cutPart);
 
         // A
         let vectorA = vertices[i];
@@ -158,7 +156,6 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
         let displacementVector1 = vectorB.clone().sub(vectorA);
         let normalizeVector1 = displacementVector1.normalize();
         const point1 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        console.log(point1);
         arr.push(point1);
 
         // B
@@ -167,7 +164,6 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
         displacementVector1 = vectorB.clone().sub(vectorA);
         normalizeVector1 = displacementVector1.normalize();
         const point2 = vectorA.clone().addScaledVector(normalizeVector1, cutPart);
-        console.log(point2);
         arr.push(point2);
     }
     createShapeFromPoints(arr);
@@ -204,7 +200,6 @@ function generatePointsOnSemicircle(radius, startAngle, center, segments) {
 }
 const roundCorner = (v1, v2) => {
     const distanceBetweenVectors = v1.distanceTo(v2);
-    console.log("dystans pomiędzy punktami: ", distanceBetweenVectors);
     const angleCornerValue = checkAngle(v1, v2);
     console.log("angleCornerValue: ", angleCornerValue);
 
