@@ -48,7 +48,7 @@ const applyTransformation = (object) => {
 const shape = new THREE.Shape();
 shape.moveTo(0, 0);
 shape.lineTo(0, 1);
-shape.moveTo(0.5, 0.5);
+shape.moveTo(0.3, 0.3);
 shape.lineTo(1, 1);
 shape.lineTo(1, 0);
 shape.lineTo(0, 0);
@@ -96,9 +96,7 @@ const shapeVertices = getVertices();
 //#region #3 Modyfikacja wierzchołków
 const createShapeFromPoints = (pointsArray) => {
     const shape = new THREE.Shape();
-    // Dodawanie punktów do kształtu
-    shape.moveTo(0.5, 0.5); // TODO: Poprawić
-    // shape.moveTo(Math.max(...pointsArray.map(({x}) => x)), Math.max(...pointsArray.map(({y}) => y)));
+    shape.moveTo(pointsArray[0].x, pointsArray[0].y);
     pointsArray.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     // Tworzenie materiału i meshu
@@ -156,7 +154,7 @@ const makeNewShapeWithRoundedCorners = (vertices) => {
         const cutPart = Math.abs(radius/Math.sin(angle));
         console.log("angleInDegrees: ", angleInDegrees);
 
-        if (angleInDegrees > 180) {
+        if (angleInDegrees > 180) { // zaokrąlony fragmęt - punkty
             console.log("!!!", angleInDegrees, vertices[i]);
 
                 // A
