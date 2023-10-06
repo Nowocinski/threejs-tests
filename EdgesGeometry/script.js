@@ -33,17 +33,13 @@ scene.add(axesHelper);
 
 //#region CatmullRomCurve3
 const curve3d = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-1, 1, -1),
-    new THREE.Vector3(-2, 2, -1),
-    new THREE.Vector3(-3, 3, 1),
-    new THREE.Vector3(-2, 1, 4),
-    new THREE.Vector3(3, 1, -1),
-    new THREE.Vector3(3, -3, 3),
-    new THREE.Vector3(3, 0, 2),
-    new THREE.Vector3(2, 1, 2),
-    new THREE.Vector3(-1, 1, -1)
+    new THREE.Vector3(5, 2, 0),
+    new THREE.Vector3(-5, 2, 0),
+    new THREE.Vector3(-5, 2, -5),
+    new THREE.Vector3(5, 2, -5),
+    new THREE.Vector3(5, 2, 0)
 ]);
-const curve3DPoints = curve3d.getPoints(50);
+const curve3DPoints = curve3d.getPoints(100);
 const curve3DGeometry = new THREE.BufferGeometry().setFromPoints(curve3DPoints);
 scene.add(new THREE.Line(curve3DGeometry, new THREE.MeshNormalMaterial()));
 //#endregion
