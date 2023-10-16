@@ -78,21 +78,6 @@ const getVertices = () => {
 const shapeVertices = getVertices();
 console.log(shapeVertices);
 
-//#region
-// const P1Y = shapeVertices[0].y;
-// const P1X = shapeVertices[0].x;
-//
-// const PY = shapeVertices[1].y;
-// const PX = shapeVertices[1].x;
-//
-// const P2Y = shapeVertices[2].y;
-// const P2X = shapeVertices[2].x;
-//
-// const angle = Math.atan2(PY - P1Y, PX - P1X) - Math.atan2(PY - P2Y, PX - P2X); // ???
-// console.log("angle: ", angle);
-
-// #2
-
 const calculateAngle = (vertex1, vertex2, vertex3) => {
     // Oblicz wektor między pierwszym a drugim wierzchołkiem
     const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
