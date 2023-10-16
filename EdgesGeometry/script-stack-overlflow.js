@@ -150,7 +150,7 @@ const circlePoints = generatePointsOnSemicircle(
     20);
 console.log("circlePoints: ", circlePoints);
 
-// ---
+// #4
 
 const create2 = (circlePoints2) => {
     const shape = new THREE.Shape();
