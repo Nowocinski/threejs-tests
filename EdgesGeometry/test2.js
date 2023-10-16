@@ -67,16 +67,18 @@ for (let currentPointIndex = 0; currentPointIndex < points.length; currentPointI
 
     const currentPoint = points[currentPointIndex];
 
-    console.log(calculateAngle(
+    const angle = calculateAngle(
         new THREE.Vector3(points[nextPoint].x, points[nextPoint].y),
         new THREE.Vector3(currentPoint.x, currentPoint.y),
         new THREE.Vector3(points[previousPoint].x, points[previousPoint].y)
-        ));
+    );
+    console.log(angle);
     
-    console.log(checkAngle(
+    const direction = checkAngle(
         new THREE.Vector2(points[previousPoint].x, points[previousPoint].y),
         new THREE.Vector2(points[nextPoint].x, points[nextPoint].y)
-    ));
+    );
+    console.log(direction);
 
     // 0, PI/2
     shape.absarc(currentPoint.x, currentPoint.y, radius, angleStep * 0, angleStep * 1);
