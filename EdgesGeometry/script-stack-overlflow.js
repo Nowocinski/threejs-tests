@@ -154,7 +154,7 @@ console.log("circlePoints: ", circlePoints);
 
 const create2 = (circlePoints2) => {
     const shape = new THREE.Shape();
-    shape.moveTo(circlePoints[0].x, circlePoints[0].y);
+    shape.moveTo(circlePoints2[0].x, circlePoints2[0].y);
     circlePoints2.forEach(({x, y}) => shape.lineTo(x, y));
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const mesh = new THREE.Mesh(
