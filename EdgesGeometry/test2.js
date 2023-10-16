@@ -26,7 +26,7 @@ let radius = 0.1;
 
 // ---------------
 
-const test = (point1, point2) => {
+const getDirectionPoint = (point1, point2) => {
     // Oblicz wektor różnicy między dwoma punktami
     const directionVector = point2.clone().sub(point1);
 
@@ -41,11 +41,11 @@ const test = (point1, point2) => {
     return perpendicularDirection;
 };
 
-const test2 = (vector2) => {
-// Oblicz kąt w radianach
+const getDirectionAngle = (vector2) => {
+    // Oblicz kąt w radianach
     const radians = Math.atan2(vector2.y, vector2.x);
 
-// Przekształć kąt z radianów na stopnie
+    // Przekształć kąt z radianów na stopnie
     const degrees = (radians * 180) / Math.PI;
 
     console.log(`Kąt: ${degrees} stopni`);
@@ -69,8 +69,8 @@ for (let currentPointIndex = 0; currentPointIndex < points.length; currentPointI
         currentPoint.x,
         currentPoint.y,
         radius,
-        test2(test( points[previousPoint], currentPoint)) + Math.PI,
-        test2(test(currentPoint, points[nextPoint])) + Math.PI);
+        getDirectionAngle(getDirectionPoint( points[previousPoint], currentPoint)) + Math.PI,
+        getDirectionAngle(getDirectionPoint(currentPoint, points[nextPoint])) + Math.PI);
 }
 // ---------------
 
