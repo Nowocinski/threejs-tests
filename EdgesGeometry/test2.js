@@ -1,7 +1,7 @@
 console.clear();
 
-import * as THREE from "https://cdn.skypack.dev/three@0.131.3";
-import {OrbitControls} from "https://cdn.skypack.dev/three@0.131.3/examples/jsm/controls/OrbitControls.js";
+import * as THREE from 'three';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000);
@@ -39,11 +39,11 @@ const textureCube = loader.load( [
 
 let g = new THREE.ExtrudeGeometry(shape, {
     depth: 3,
-    bevelEnabled: true,
-    bevelThickness: 0.05,
-    bevelSize: 0.05,
-    bevelSegments: 20,
-    curveSegments: 20
+    bevelEnabled: false,
+    // bevelThickness: 0.05,
+    // bevelSize: 0.05,
+    // bevelSegments: 20,
+    // curveSegments: 20
 });
 g.center();
 g.rotateX(Math.PI * -0.5);
