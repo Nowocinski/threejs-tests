@@ -55,6 +55,33 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
 };
 
+const test = (point1, point2) => {
+    // Oblicz wektor różnicy między dwoma punktami
+    const directionVector = point2.clone().sub(point1);
+
+    // Oblicz kierunek prostopadły poprzez obrót o 90 stopni
+    const perpendicularDirection = new THREE.Vector2(-directionVector.y, directionVector.x);
+
+    // Normalizuj wektor, jeśli chcesz jedynie kierunek
+    perpendicularDirection.normalize();
+
+    console.log(perpendicularDirection); // Kierunek prostopadły
+    
+    return perpendicularDirection;
+};
+
+const test2 = (vector2) => {
+// Oblicz kąt w radianach
+    const radians = Math.atan2(vector2.y, vector2.x);
+
+// Przekształć kąt z radianów na stopnie
+    const degrees = (radians * 180) / Math.PI;
+
+    console.log(`Kąt: ${degrees} stopni`);
+
+    return radians;
+};
+
 const points = [
     new THREE.Vector2(4, 2),
     new THREE.Vector2(-2, 2),
@@ -67,21 +94,28 @@ for (let currentPointIndex = 0; currentPointIndex < points.length; currentPointI
 
     const currentPoint = points[currentPointIndex];
 
-    const angle = calculateAngle(
-        new THREE.Vector3(points[nextPoint].x, points[nextPoint].y),
-        new THREE.Vector3(currentPoint.x, currentPoint.y),
-        new THREE.Vector3(points[previousPoint].x, points[previousPoint].y)
-    );
-    console.log(angle);
-    
-    const direction = checkAngle(
-        new THREE.Vector2(points[previousPoint].x, points[previousPoint].y),
-        new THREE.Vector2(points[nextPoint].x, points[nextPoint].y)
-    );
-    console.log(direction);
+    // const angle = calculateAngle(
+    //     new THREE.Vector3(points[nextPoint].x, points[nextPoint].y),
+    //     new THREE.Vector3(currentPoint.x, currentPoint.y),
+    //     new THREE.Vector3(points[previousPoint].x, points[previousPoint].y)
+    // );
+    // console.log(angle);
+    //
+    // const direction = checkAngle(
+    //     new THREE.Vector2(points[previousPoint].x, points[previousPoint].y),
+    //     new THREE.Vector2(points[nextPoint].x, points[nextPoint].y)
+    // );
+    // console.log(direction);
+    // const dir = test(currentPoint, points[nextPoint]);
+    // const hmm = test2(test(currentPoint, points[nextPoint]));
 
     // 0, PI/2
-    shape.absarc(currentPoint.x, currentPoint.y, radius, angleStep * 0, angleStep * 1);
+    shape.absarc(
+        currentPoint.x,
+        currentPoint.y,
+        radius,
+        test2(test( points[previousPoint], currentPoint)) + Math.PI,
+        test2(test(currentPoint, points[nextPoint])) + Math.PI);
 }
 // ---------------
 
