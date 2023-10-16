@@ -51,7 +51,6 @@ const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 // Tworzenie materiału i meshu
 const material = new THREE.MeshNormalMaterial({side: THREE.DoubleSide/*, wireframe: true*/});
 const mesh = new THREE.Mesh(geometry, material);
-mesh.visible = false;
 scene.add(mesh);
 
 const getVertices = () => {
@@ -78,57 +77,6 @@ const getVertices = () => {
 };
 const shapeVertices = getVertices();
 console.log(shapeVertices);
-// ++++
-// // Tworzenie dwóch wektorów
-// const vectorA = new THREE.Vector3(1, 2, 3);
-// const vectorB = new THREE.Vector3(4, 5, 6);
-//
-// // Obliczenie wektora przesunięcia od vectorA do vectorB
-// const displacementVector = vectorB.clone().sub(vectorA).normalize();
-//
-// // Wynikowy wektor "displacementVector" będzie zawierać przesunięcie od vectorA do vectorB
-// console.log(displacementVector); // Wynik: Vector3 {x: 3, y: 3, z: 3}
-// ++++
-const radius = 0.1;
-let newVertices = [];
-const loops =  shapeVertices.length;
-// uwzględniany następny punkt
-for (let i = 0; i < loops; i++) {
-    let vectorA, vectorB;
-    // before
-    if (i === 0) { // Ostatni punkt
-        vectorA = shapeVertices[0].clone();
-        vectorB = shapeVertices[loops - 1].clone();
-    } else {
-        vectorA = shapeVertices[i].clone();
-        vectorB = shapeVertices[i-1].clone();
-    }
-
-    const displacementVector1 = vectorB.clone().sub(vectorA);
-    const normalizeVector1 = displacementVector1.normalize();
-    newVertices.push(vectorA.clone().addScaledVector(normalizeVector1, radius));
-    
-    // after
-    if (i === loops - 1) { // Ostatni punkt
-        vectorA = shapeVertices[i].clone();
-        vectorB = shapeVertices[0].clone();
-    } else {
-        vectorA = shapeVertices[i].clone();
-        vectorB = shapeVertices[i+1].clone();
-    }
-    
-    const displacementVector2 = vectorB.clone().sub(vectorA);
-    const normalizeVector2 = displacementVector2.normalize();
-    newVertices.push(vectorA.clone().addScaledVector(normalizeVector2, radius));
-}
-console.log(newVertices);
-// +++++++++++++
-const shape2 = new THREE.Shape();
-// Dodawanie punktów do kształtu
-shape2.moveTo(0, 0);
-newVertices.reverse().forEach(vector3 => shape.lineTo(vector3.x, vector3.y));
-scene.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, extrudeSettings), material));
-//#endregion
 
 function animate() {
     renderer.render(scene, camera);
