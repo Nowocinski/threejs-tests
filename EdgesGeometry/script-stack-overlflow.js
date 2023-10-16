@@ -105,6 +105,8 @@ console.log("angle: ", calculateAngle(shapeVertices[0], shapeVertices[1], shapeV
 
 // #2 Kalkulacja "siły odśrodkowej" między punktami
 
+const radius = 0.1;
+
 const pointA = new THREE.Vector3(
     (shapeVertices[0].x + shapeVertices[2].x)/2,
     (shapeVertices[0].y + shapeVertices[2].y)/2
@@ -112,7 +114,7 @@ const pointA = new THREE.Vector3(
 console.log("pointA: ", pointA);
 const displacementVector = pointA.clone().sub(shapeVertices[1]);
 console.log("displacementVector: ", displacementVector);
-console.log("displacementVector [normalize]: ", displacementVector.normalize());
+console.log("displacementVector [normalize]: ", displacementVector.normalize().setScalar(radius));
 
 //#endregion
 
