@@ -78,7 +78,7 @@ const getVertices = () => {
 const shapeVertices = getVertices();
 console.log(shapeVertices);
 
-// #1 Kalkulacja kąta między wierzchołkami
+// #1.1 Kalkulacja kąta między wierzchołkami
 
 const calculateAngle = (vertex1, vertex2, vertex3) => {
     // Oblicz wektor między pierwszym a drugim wierzchołkiem
@@ -103,6 +103,16 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
 };
 const angle = calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]);
 console.log("angle: ", angle);
+
+// #1.2 Kąt "kierunkowy"
+
+const checkAngle = (vector1, vector2) => {
+    const directionVector = new THREE.Vector2(vector2.x - vector1.x, vector2.y - vector1.y);
+    const angleRadians = Math.atan2(directionVector.y, directionVector.x);
+    // const angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
+    // return angleDegrees;
+    return angleRadians;
+};
 
 // #2 Kalkulacja "siły odśrodkowej" między punktami
 
@@ -133,7 +143,11 @@ const generatePointsOnSemicircle = (radius, startAngle, center, segments) => {
     return points.reverse();
 };
 
-const circlePoints = generatePointsOnSemicircle(radius, angle[0], calculatedCenter, 20);
+const circlePoints = generatePointsOnSemicircle(
+    radius,
+    checkAngle(shapeVertices[0],shapeVertices[2]),
+    calculatedCenter,
+    20);
 console.log("circlePoints: ", circlePoints);
 
 // ---
