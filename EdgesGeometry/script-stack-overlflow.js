@@ -78,6 +78,50 @@ const getVertices = () => {
 const shapeVertices = getVertices();
 console.log(shapeVertices);
 
+//#region
+// const P1Y = shapeVertices[0].y;
+// const P1X = shapeVertices[0].x;
+//
+// const PY = shapeVertices[1].y;
+// const PX = shapeVertices[1].x;
+//
+// const P2Y = shapeVertices[2].y;
+// const P2X = shapeVertices[2].x;
+//
+// const angle = Math.atan2(PY - P1Y, PX - P1X) - Math.atan2(PY - P2Y, PX - P2X); // ???
+// console.log("angle: ", angle);
+
+// #2
+
+const calculateAngle = (vertex1, vertex2, vertex3) => {
+    // Oblicz wektor między pierwszym a drugim wierzchołkiem
+    const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
+
+    // Oblicz wektor między trzecim a drugim wierzchołkiem
+    const vector2 = new THREE.Vector3().subVectors(vertex3, vertex2);
+
+    // Oblicz kąt między tymi dwoma wektorami przy użyciu funkcji Math.atan2
+    let angleRadians = Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
+
+    // Konwersja kąta z radianów na stopnie
+    let angleDegrees = THREE.MathUtils.radToDeg(angleRadians);
+
+    // Uzyskaj wartość dodatnią kąta, aby mieć wynik między 0 a 360 stopni
+    if (angleDegrees < 0) {
+        angleDegrees += 360;
+    }
+
+    console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
+    return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
+};
+console.log("angle: ", calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]));
+
+// #3
+const radius = 0.1;
+// segment = PC1 = PC2 = radius / |tan(angle / 2)|
+
+//#endregion
+
 function animate() {
     renderer.render(scene, camera);
 }
