@@ -55,23 +55,31 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
 };
 
-const points = [[4, 2], [-2, 2], [-4, -2], [2, -2]];
+const points = [
+    new THREE.Vector2(4, 2),
+    new THREE.Vector2(-2, 2),
+    new THREE.Vector2(-4, -2),
+    new THREE.Vector2(2, -2)];
 
-for (let currentPoint = 0; currentPoint < points.length; currentPoint++) {
-    const nextPoint = currentPoint !== points.length - 1 ? currentPoint + 1 : 0;
-    const previousPoint = currentPoint !== 0 ? currentPoint - 1 : points.length - 1;
-    // abc(points[currentPoint]);
+for (let currentPointIndex = 0; currentPointIndex < points.length; currentPointIndex++) {
+    const nextPoint = currentPointIndex !== points.length - 1 ? currentPointIndex + 1 : 0;
+    const previousPoint = currentPointIndex !== 0 ? currentPointIndex - 1 : points.length - 1;
 
-    const x = points[currentPoint][0];
-    const y = points[currentPoint][1];
+    const currentPoint = points[currentPointIndex];
+
+    console.log(calculateAngle(
+        new THREE.Vector3(points[nextPoint].x, points[nextPoint].y),
+        new THREE.Vector3(currentPoint.x, currentPoint.y),
+        new THREE.Vector3(points[previousPoint].x, points[previousPoint].y)
+        ));
+    
+    console.log(checkAngle(
+        new THREE.Vector2(points[previousPoint].x, points[previousPoint].y),
+        new THREE.Vector2(points[nextPoint].x, points[nextPoint].y)
+    ));
 
     // 0, PI/2
-    shape.absarc(x, y, radius, angleStep * 0, angleStep * 1);
-    
-    console.log(calculateAngle(
-        new THREE.Vector3(points[previousPoint][0], points[previousPoint][0]),
-        new THREE.Vector3(x, y),
-        new THREE.Vector3(points[nextPoint][0], points[nextPoint][0])));
+    shape.absarc(currentPoint.x, currentPoint.y, radius, angleStep * 0, angleStep * 1);
 }
 // ---------------
 
