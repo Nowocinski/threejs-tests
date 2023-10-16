@@ -101,7 +101,8 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
     return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
 };
-console.log("angle: ", calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]));
+const angle = calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]);
+console.log("angle: ", angle);
 
 // #2 Kalkulacja "siły odśrodkowej" między punktami
 
@@ -114,7 +115,40 @@ const pointA = new THREE.Vector3(
 console.log("pointA: ", pointA);
 const displacementVector = pointA.clone().sub(shapeVertices[1]);
 console.log("displacementVector: ", displacementVector);
-console.log("displacementVector [normalize]: ", displacementVector.normalize().setScalar(radius));
+const calculatedCenter = displacementVector.normalize().setScalar(radius);
+console.log("displacementVector [normalize]: ", calculatedCenter);
+
+// #3
+
+const generatePointsOnSemicircle = (radius, startAngle, center, segments) => {
+    const points = [];
+
+    for (let i = 0; i <= segments; i++) {
+        const angle = startAngle + (i / segments) * Math.PI; // Kąt od początku do połowy okręgu
+        const x = center.x + radius * Math.cos(angle);
+        const y = center.y + radius * Math.sin(angle);
+        points.push(new THREE.Vector2(x, y));
+    }
+
+    return points.reverse();
+};
+
+const circlePoints = generatePointsOnSemicircle(radius, angle[0], calculatedCenter, 20);
+console.log("circlePoints: ", circlePoints);
+
+// ---
+
+const create2 = (circlePoints2) => {
+    const shape = new THREE.Shape();
+    shape.moveTo(circlePoints[0].x, circlePoints[0].y);
+    circlePoints2.forEach(({x, y}) => shape.lineTo(x, y));
+    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    const mesh = new THREE.Mesh(
+        geometry,
+        new THREE.MeshNormalMaterial());
+    scene.add(mesh.translateZ(2));
+};
+create2(circlePoints);
 
 //#endregion
 
