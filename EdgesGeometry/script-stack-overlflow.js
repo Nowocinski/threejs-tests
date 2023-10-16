@@ -101,7 +101,7 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
     console.log("Miarę kąta między trzema wierzchołkami wynosi: " + angleDegrees + " stopni");
     return [angleRadians < 0 ? angleRadians + Math.PI : angleRadians, angleDegrees];
 };
-const angle = calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]);
+const angle = calculateAngle(shapeVertices[1], shapeVertices[1], shapeVertices[3]);
 console.log("angle: ", angle);
 
 // #1.2 Kąt "kierunkowy"
@@ -119,13 +119,13 @@ const checkAngle = (vector1, vector2) => {
 const radius = 0.1;
 
 const pointA = new THREE.Vector3(
-    (shapeVertices[0].x + shapeVertices[2].x)/2,
-    (shapeVertices[0].y + shapeVertices[2].y)/2
+    (shapeVertices[1].x + shapeVertices[3].x)/2,
+    (shapeVertices[1].y + shapeVertices[3].y)/2
 );
 console.log("pointA: ", pointA);
 const displacementVector = pointA.clone().sub(shapeVertices[1]);
 console.log("displacementVector: ", displacementVector);
-const calculatedCenter = displacementVector.normalize().setScalar(radius);
+const calculatedCenter = displacementVector.normalize().setScalar(radius).add(shapeVertices[2]);
 console.log("displacementVector [normalize]: ", calculatedCenter);
 
 // #3
@@ -145,8 +145,8 @@ const generatePointsOnSemicircle = (radius, startAngle, center, segments) => {
 
 const circlePoints = generatePointsOnSemicircle(
     radius,
-    checkAngle(shapeVertices[0],shapeVertices[2]),
-    calculatedCenter,
+    checkAngle(shapeVertices[1],shapeVertices[3]),
+    /*calculatedCenter*/new THREE.Vector3(),
     20);
 console.log("circlePoints: ", circlePoints);
 
@@ -159,10 +159,58 @@ const create2 = (circlePoints2) => {
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const mesh = new THREE.Mesh(
         geometry,
-        new THREE.MeshNormalMaterial());
-    scene.add(mesh.translateZ(2));
+        new THREE.MeshBasicMaterial({color: "red"}));
+    scene.add(mesh.translateZ(0.1));
 };
 create2(circlePoints);
+
+const test222 = () => {
+    // Tworzenie geometrii
+    const extrudeSettings = {
+        depth: 10,
+        bevelEnabled: true,
+        bevelSegments: 20,
+        steps: 2,
+        bevelSize: 2,
+        bevelThickness: 2,
+    };
+
+    const shape = new THREE.Shape();
+    // shape.moveTo(0, 0);
+    // shape.lineTo(10, 20);
+    // shape.lineTo(20, 20);
+    // shape.lineTo(10, 0);
+    // shape.lineTo(0, 0);
+    shape.moveTo(0, 0);
+    shape.lineTo(10, 10);
+    shape.lineTo(20, 10);
+    shape.lineTo(10, 0);
+    shape.lineTo(0, 0);
+
+    const extrudeGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+    // // Zaokrąglenie wszystkich krawędzi
+    // const radius = 1; // Promień zaokrąglenia
+    // const roundGeometry = new THREE.EdgesGeometry(extrudeGeometry);
+    // roundGeometry.attributes.position.array.forEach((pos, index) => {
+    //     if (index % 3 === 0) {
+    //         const v = new THREE.Vector3(pos, roundGeometry.attributes.position.array[index + 1], roundGeometry.attributes.position.array[index + 2]);
+    //         v.normalize().multiplyScalar(radius);
+    //         roundGeometry.attributes.position.array[index] = v.x;
+    //         roundGeometry.attributes.position.array[index + 1] = v.y;
+    //         roundGeometry.attributes.position.array[index + 2] = v.z;
+    //     }
+    // });
+
+    // Tworzenie materiału
+    const material = new THREE.MeshNormalMaterial();
+
+    // Tworzenie obiektu Mesh
+    const mesh = new THREE.Mesh(extrudeGeometry, material);
+    
+    scene.add(mesh);
+};
+test222();
 
 //#endregion
 
