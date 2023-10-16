@@ -25,7 +25,6 @@ let angleStep = Math.PI * 0.5;
 let radius = 0.1;
 
 shape.absarc(4, 2, radius, angleStep * 0, angleStep * 1);
-shape.absarc(2, 1, radius, angleStep * 0, angleStep * 1);
 shape.absarc(-2, 2, radius, angleStep * 1, angleStep * 2);
 shape.absarc(-4, -2, radius, angleStep * 2, angleStep * 3);
 shape.absarc(2, -2, radius, angleStep * 3, angleStep * 4);
