@@ -78,6 +78,8 @@ const getVertices = () => {
 const shapeVertices = getVertices();
 console.log(shapeVertices);
 
+// #1 Kalkulacja kąta między wierzchołkami
+
 const calculateAngle = (vertex1, vertex2, vertex3) => {
     // Oblicz wektor między pierwszym a drugim wierzchołkiem
     const vector1 = new THREE.Vector3().subVectors(vertex1, vertex2);
@@ -101,9 +103,16 @@ const calculateAngle = (vertex1, vertex2, vertex3) => {
 };
 console.log("angle: ", calculateAngle(shapeVertices[0], shapeVertices[1], shapeVertices[2]));
 
-// #3
-const radius = 0.1;
-// segment = PC1 = PC2 = radius / |tan(angle / 2)|
+// #2 Kalkulacja "siły odśrodkowej" między punktami
+
+const pointA = new THREE.Vector3(
+    (shapeVertices[0].x + shapeVertices[2].x)/2,
+    (shapeVertices[0].y + shapeVertices[2].y)/2
+);
+console.log("pointA: ", pointA);
+const displacementVector = pointA.clone().sub(shapeVertices[1]);
+console.log("displacementVector: ", displacementVector);
+console.log("displacementVector [normalize]: ", displacementVector.normalize());
 
 //#endregion
 
