@@ -54,6 +54,7 @@ const getDirectionAngle = (vector2) => {
 
 const points = [
     new THREE.Vector2(4, 2),
+    new THREE.Vector2(2, 1),
     new THREE.Vector2(-2, 2),
     new THREE.Vector2(-4, -2),
     new THREE.Vector2(2, -2)];
