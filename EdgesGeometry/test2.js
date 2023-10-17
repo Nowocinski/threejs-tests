@@ -21,7 +21,6 @@ light.position.setScalar(1);
 scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
 
 let shape = new THREE.Shape();
-let angleStep = Math.PI * 0.5;
 let radius = 0.1;
 
 // ---------------
@@ -99,7 +98,7 @@ let g = new THREE.ExtrudeGeometry(shape, {
 g.center();
 g.rotateX(Math.PI * -0.5);
 
-let m = new THREE.MeshStandardMaterial({color: "aqua", envMap: textureCube, metalness: 1, roughness: 0.25});
+let m = new THREE.MeshStandardMaterial({color: "aqua", envMap: textureCube, metalness: 1, roughness: 0.25, side: THREE.DoubleSide});
 let o = new THREE.Mesh(g, m);
 scene.add(o);
 
