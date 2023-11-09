@@ -20,12 +20,15 @@ camera.position.set(6, 8, 14);
 orbit.update();
 
 // Sets a 12 by 12 gird helper
+const group = new THREE.Group();
 const gridHelper = new THREE.GridHelper(12, 12);
-scene.add(gridHelper);
+group.add(gridHelper)
 
 // Sets the x, y, and z axes with each having a length of 4
 const axesHelper = new THREE.AxesHelper(4);
-scene.add(axesHelper);
+group.add(axesHelper);
+
+scene.add(group);
 
 function animate() {
     renderer.render(scene, camera);
