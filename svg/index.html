@@ -89,6 +89,39 @@
 
     // Dodanie elementu SVG do body dokumentu HTML
     document.body.appendChild(svg);
+    
+    // ==================
+
+    function calculateAngle(p1, p2, p3) {
+        // Obliczanie kątów nachylenia odcinków
+        const angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x);
+        const angle2 = Math.atan2(p3.y - p2.y, p3.x - p2.x);
+
+        // Obliczanie różnicy kątów
+        let angle = angle2 - angle1;
+
+        // Zamiana na stopnie
+        angle = (angle * 180) / Math.PI;
+
+        // Zapewnienie, że kąt jest dodatni
+        if (angle < 0) {
+            angle += 360;
+        }
+
+        return angle;
+    }
+
+    // Przykładowe punkty
+    const p1 = { x: 0, y: 0 };
+    const p2 = { x: 1, y: 1 };
+    const p3 = { x: 2, y: 0 };
+
+    // Obliczanie kąta
+    const angle = calculateAngle(p1, p2, p3);
+    // const angle = calculateAngle(arr[0], arr[1], arr[2]);
+
+    console.log("Kąt między punktami: " + angle + " stopni");
+
 </script>
 </body>
 </html>
