@@ -138,8 +138,8 @@
     
     const config = {
         male: true,
-        onlyLine: true,
-        curveRadius: 6,
+        onlyLine: false,
+        curveRadius: 60,
     }
     
     const config2 = {
@@ -175,8 +175,8 @@
         svg.setAttribute("id", "svg");
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", res);
+        path.setAttribute("stroke", "red");
         if (config.onlyLine) {
-            path.setAttribute("stroke", "black");
             path.setAttribute("stroke-width", "0.5");
             path.setAttribute("fill", "none");
         }
