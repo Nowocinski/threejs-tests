@@ -23,8 +23,7 @@
         const obtuseAnglesIndexes = [];
 
         if (vertices.length < 3) {
-            console.log("Za mało wierzchołków.");
-            return obtuseAnglesIndexes;
+            throw Error("Not enough vertices");
         }
 
         for (let i = 0; i < vertices.length; i++) {
@@ -43,7 +42,6 @@
             }
         }
 
-        console.log("Indeksy wierzchołków, w których występują kąty rozwarte:", obtuseAnglesIndexes);
         return obtuseAnglesIndexes;
     }
 
@@ -60,7 +58,6 @@
             obtuseAngles2.shift(); // usuwanie pierwszego elementu tablicy
             obtuseAngles2.push(pathCoords.length - 1);
         }
-        console.log("obtuseAngles", obtuseAngles);
 
         for (let i = 0; i < pathCoords.length; i++) {
             // 1. Get current coord and the next two (startpoint, cornerpoint, endpoint) to calculate rounded curve
@@ -75,9 +72,6 @@
 
             // Check if the angle is obtuse
             const isObtuse = !obtuseAngles2.some(obtuseAngle => obtuseAngle === i);
-            if (isObtuse) {
-                console.log(i);
-            }
 
             if (isObtuse) {
                 // Calculate curvePoint c1 -> c2
@@ -115,13 +109,9 @@
         }
         // Logically connect path to starting point again (shouldn't be necessary as path ends there anyway, but seems cleaner)
         path.push('Z');
-        
-        console.log(path);
 
         return path.join(' ');
     }
-
-    // ==================
 
     const arr = [
         {x: 0, y: 0},
@@ -131,7 +121,6 @@
         {x: 50, y: 50},
     ];
     const res = createRoundedPathString(arr);
-    console.log(res);
 
     // Tworzenie obiektu SVG
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
