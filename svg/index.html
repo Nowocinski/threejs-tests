@@ -220,29 +220,6 @@
         return path.join(' ');
     }
 
-    // Function to check if the angle at a vertex is obtuse
-    function isAngleObtuse(p1, p2, p3) {
-        const dotProduct = (p2.x - p1.x) * (p3.x - p2.x) + (p2.y - p1.y) * (p3.y - p2.y);
-        const mag1 = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-        const mag2 = Math.sqrt(Math.pow(p3.x - p2.x, 2) + Math.pow(p3.y - p2.y, 2));
-        const cosTheta = dotProduct / (mag1 * mag2);
-
-        // Ensure that cosTheta is within the valid range [-1, 1] to avoid NaN in Math.acos
-        const clampedCosTheta = Math.max(-1, Math.min(1, cosTheta));
-
-        // Calculate the angle in radians
-        const angle = Math.acos(clampedCosTheta);
-
-        // Convert angle from radians to degrees
-        const angleDegrees = (angle * 180) / Math.PI;
-        
-        console.log(p1, p2, p3);
-        console.log(angleDegrees, angleDegrees > 90);
-
-        // Check if the angle is obtuse (greater than 90 degrees)
-        return angleDegrees > 90;
-    }
-
     // ==================
 
     const arr = [
