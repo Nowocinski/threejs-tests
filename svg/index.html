@@ -45,7 +45,7 @@
         return obtuseAnglesIndexes;
     }
 
-    function createRoundedPathString(pathCoords) {
+    function createRoundedPathString(pathCoords, male) {
         const path = [];
         const curveRadius = 3;
 
@@ -73,7 +73,9 @@
             // 2. For each 3 coords, enter two new path commands: Line to start of curve, bezier curve around corner.
 
             // Check if the angle is obtuse
-            const isObtuse = !obtuseAngles2.some(obtuseAngle => obtuseAngle === i);
+            const isObtuse = male
+                ? !obtuseAngles2.includes(i)
+                : obtuseAngles2.includes(i);
 
             if (isObtuse) {
                 // Calculate curvePoint c1 -> c2
@@ -132,7 +134,8 @@
         {x: 169.5801104972375, y: 114.8066298342542},
         {x: 117.7513812154696, y: 92.8232044198895},
     ];
-    const res = createRoundedPathString(arr);
+    const male = true;
+    const res = createRoundedPathString(arr, male);
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
