@@ -135,45 +135,63 @@
 
         return path.join(' ');
     }
-
-    const arr = [
-        // {x: 50, y: 50},
-        // {x: 0, y: 0},
-        // {x: 100, y: 0},
-        // {x: 100, y: 100},
-        // {x: 0, y: 100},
-
-        {x: 94.7955801104972, y: 116.6077348066299},
-        {x: 48.5414364640884, y: 87.9060773480663},
-        {x: 91.3370165745856, y: 77.9005524861878},
-        {x: 83.646408839779, y: 31.646408839779},
-        {x: 115.779005524862, y: 54.2872928176796},
-        {x: 171.3812154696132, y: 32.1325966850829},
-        {x: 148.0828729281768, y: 70.182320441989},
-        {x: 169.5801104972375, y: 114.8066298342542},
-        {x: 117.7513812154696, y: 92.8232044198895},
-    ];
-
-    // Config
-    const male = true;
-    const onlyLine = true;
-    const curveRadius = 6;
-
-    arr.forEach(ele => {ele.x *= 5; ele.y *= 5;})
-    const res = createRoundedPathString(arr, male, curveRadius);
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", res);
-    if (onlyLine) {
-        path.setAttribute("stroke", "black");
-        path.setAttribute("stroke-width", "0.5");
-        path.setAttribute("fill", "none");
-        svg.appendChild(path);
+    
+    const config = {
+        male: true,
+        onlyLine: true,
+        curveRadius: 6,
     }
-    document.body.appendChild(svg);
+    
+    const config2 = {
+        generate: () => {
+            const svg = document.getElementById("svg");
+            document.body.removeChild(svg);
+            addSvgToHtml();
+        }
+    }
+    
+    const addSvgToHtml = () => {
+        const arr = [
+            // {x: 50, y: 50},
+            // {x: 0, y: 0},
+            // {x: 100, y: 0},
+            // {x: 100, y: 100},
+            // {x: 0, y: 100},
+
+            {x: 94.7955801104972, y: 116.6077348066299},
+            {x: 48.5414364640884, y: 87.9060773480663},
+            {x: 91.3370165745856, y: 77.9005524861878},
+            {x: 83.646408839779, y: 31.646408839779},
+            {x: 115.779005524862, y: 54.2872928176796},
+            {x: 171.3812154696132, y: 32.1325966850829},
+            {x: 148.0828729281768, y: 70.182320441989},
+            {x: 169.5801104972375, y: 114.8066298342542},
+            {x: 117.7513812154696, y: 92.8232044198895},
+        ];
+
+        arr.forEach(ele => {ele.x *= 5; ele.y *= 5;})
+        const res = createRoundedPathString(arr, config.male, config.curveRadius);
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("id", "svg");
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", res);
+        if (config.onlyLine) {
+            path.setAttribute("stroke", "black");
+            path.setAttribute("stroke-width", "0.5");
+            path.setAttribute("fill", "none");
+        }
+        svg.appendChild(path);
+        document.body.appendChild(svg);
+    };
+    addSvgToHtml();
+    
 
     //#region dat.gui
     const gui = new dat.GUI();
+    gui.add(config, "male");
+    gui.add(config, "onlyLine");
+    gui.add(config, "curveRadius");
+    gui.add(config2, "generate").name("Generate constructions");
     //#endregion
 </script>
 </body>
