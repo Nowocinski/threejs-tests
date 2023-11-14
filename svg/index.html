@@ -6,12 +6,12 @@
 </head>
 <body>
 <script>
-    // Funkcja pomocnicza do obliczania kąta między trzema punktami
+    // Helper function to calculate the angle between three points
     function calculateAngle2(p1, p2, p3) {
         const angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
         let angleDeg = (angleRad * 180) / Math.PI;
 
-        // Zapewnienie, że kąt jest dodatni
+        // Ensuring that the angle is positive
         if (angleDeg < 0) {
             angleDeg += 360;
         }
@@ -28,15 +28,15 @@
 
         for (let i = 0; i < vertices.length; i++) {
             const p1 = vertices[i];
-            const p2 = vertices[(i + 1) % vertices.length]; // Następny wierzchołek (cyklicznie)
+            const p2 = vertices[(i + 1) % vertices.length]; // Next vertex (cyclic)
 
-            // Poprzedni i następny wierzchołek
+            // Previous and next vertex
             const p0 = vertices[(i - 1 + vertices.length) % vertices.length];
 
-            // Obliczanie kąta między trzema punktami (p0, p1, p2)
+            // Calculating the angle between three points (p0, p1, p2)
             const angle = calculateAngle2(p0, p1, p2);
 
-            // Sprawdzanie, czy kąt jest rozwarty
+            // Checking whether an angle is obtuse
             if (angle >= 180) {
                 obtuseAnglesIndexes.push(i);
             }
