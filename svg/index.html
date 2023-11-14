@@ -5,46 +5,7 @@
     <title>$Title$</title>
 </head>
 <body>
-<!--<svg>-->
-<!--    <g>-->
-<!--        <path id="k9ffd8001" d="M64.5 45.5 82.5 45.5 82.5 64.5 64.5 64.5 z" stroke="#808600" stroke-width="0" transform="rotate(0 0 0)" stroke-linecap="square" stroke-linejoin="round" fill-opacity="1" stroke-opacity="1" fill="#a0a700"></path>-->
-<!--        <path id="kb8000001" d="M64.5 45.5 82.5 45.5 82.5 64.5 64.5 64.5 z" stroke="#808600" stroke-width="0" transform="rotate(0 0 0)" stroke-linecap="square" stroke-linejoin="round" fill-opacity="1" stroke-opacity="1" fill="url(#k9ffb0001)"></path>-->
-<!--    </g>-->
-<!--</svg>-->
 <script>
-    // ==================
-    // TODO: Zapewne do usunięcia
-    function calculateAngle(p1, p2, p3) {
-        // Obliczanie kątów nachylenia odcinków
-        const angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x);
-        const angle2 = Math.atan2(p3.y - p2.y, p3.x - p2.x);
-
-        // Obliczanie różnicy kątów
-        let angle = angle2 - angle1;
-
-        // Zamiana na stopnie
-        angle = (angle * 180) / Math.PI;
-
-        // // Zapewnienie, że kąt jest dodatni
-        // if (angle < 0) {
-        //     angle += 360;
-        // }
-
-        return angle;
-    }
-
-    // Przykładowe punkty
-    const p1 = { x: 0, y: 0 };
-    const p2 = { x: 1, y: -1 };
-    const p3 = { x: 2, y: 0 };
-
-    // Obliczanie kąta
-    const angle = calculateAngle(p1, p2, p3);
-    // const angle = calculateAngle(arr[0], arr[1], arr[2]);
-
-    console.log("Kąt między punktami: " + angle + " stopni");
-
-    // ==================
     // Funkcja pomocnicza do obliczania kąta między trzema punktami
     function calculateAngle2(p1, p2, p3) {
         const angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
