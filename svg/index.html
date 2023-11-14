@@ -53,14 +53,16 @@
         pathCoords = pathCoords.slice();
         
         const obtuseAngles = findObtuseAngles(pathCoords);
+        
+        // Alignment of data under modified SVG object
         const obtuseAngles2 = obtuseAngles.map(obtuseAngle => obtuseAngle - 1);
         if (obtuseAngles2[0] === -1) {
-            obtuseAngles2.shift(); // usuwanie pierwszego elementu tablicy
-            obtuseAngles2.push(pathCoords.length - 1);
+            obtuseAngles2.shift(); // deleting the first element of the array
+            obtuseAngles2.push(pathCoords.length - 1); // and adding the deleted item to the end with the corrected index
         }
 
         for (let i = 0; i < pathCoords.length; i++) {
-            // 1. Get current coord and the next two (startpoint, cornerpoint, endpoint) to calculate rounded curve
+            // 1. Get current coord and the next two (start point, corner point, endpoint) to calculate rounded curve
             const c2Index = (i + 1) % pathCoords.length;
             const c3Index = (i + 2) % pathCoords.length;
 
