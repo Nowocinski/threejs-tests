@@ -153,6 +153,11 @@
         pathCoords = pathCoords.slice();
         
         const obtuseAngles = findObtuseAngles(pathCoords);
+        const obtuseAngles2 = obtuseAngles.map(obtuseAngle => obtuseAngle - 1);
+        if (obtuseAngles2[0] === -1) {
+            obtuseAngles2.shift(); // usuwanie pierwszego elementu tablicy
+            obtuseAngles2.push(pathCoords.length - 1);
+        }
         console.log("obtuseAngles", obtuseAngles);
 
         for (let i = 0; i < pathCoords.length; i++) {
@@ -167,8 +172,11 @@
             // 2. For each 3 coords, enter two new path commands: Line to start of curve, bezier curve around corner.
 
             // Check if the angle is obtuse
-            const isObtuse = isAngleObtuse(c1, c2, c3);
-            // const isObtuse = !obtuseAngles.some(obtuseAngle => obtuseAngle === i);
+            // const isObtuse = isAngleObtuse(c1, c2, c3);
+            const isObtuse = !obtuseAngles2.some(obtuseAngle => obtuseAngle === i);
+            if (isObtuse) {
+                console.log(i);
+            }
 
             if (isObtuse) {
                 // Calculate curvePoint c1 -> c2
@@ -206,6 +214,8 @@
         }
         // Logically connect path to starting point again (shouldn't be necessary as path ends there anyway, but seems cleaner)
         path.push('Z');
+        
+        console.log(path);
 
         return path.join(' ');
     }
@@ -215,22 +225,33 @@
         const dotProduct = (p2.x - p1.x) * (p3.x - p2.x) + (p2.y - p1.y) * (p3.y - p2.y);
         const mag1 = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
         const mag2 = Math.sqrt(Math.pow(p3.x - p2.x, 2) + Math.pow(p3.y - p2.y, 2));
-        const angle = Math.acos(dotProduct / (mag1 * mag2));
+        const cosTheta = dotProduct / (mag1 * mag2);
+
+        // Ensure that cosTheta is within the valid range [-1, 1] to avoid NaN in Math.acos
+        const clampedCosTheta = Math.max(-1, Math.min(1, cosTheta));
+
+        // Calculate the angle in radians
+        const angle = Math.acos(clampedCosTheta);
 
         // Convert angle from radians to degrees
         const angleDegrees = (angle * 180) / Math.PI;
-        console.log(angleDegrees, angleDegrees > 90);
+        
         console.log(p1, p2, p3);
+        console.log(angleDegrees, angleDegrees > 90);
 
         // Check if the angle is obtuse (greater than 90 degrees)
-        // return angleDegrees > 90;
-        return (180 - angleDegrees) < 90; // TODO: Korekta
-        // return true;
+        return angleDegrees > 90;
     }
 
     // ==================
 
-    const arr = [{x: 0, y: 0}, {x: 50, y: 50}, {x: 100, y: 0}, {x: 100, y: 100}, {x: 0, y: 100}];
+    const arr = [
+        {x: 0, y: 0},
+        {x: 100, y: 0},
+        {x: 100, y: 100},
+        {x: 0, y: 100},
+        {x: 50, y: 50},
+    ];
     const res = createRoundedPathString(arr);
     console.log(res);
 
