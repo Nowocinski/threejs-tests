@@ -134,17 +134,10 @@
     ];
     const res = createRoundedPathString(arr);
 
-    // Tworzenie obiektu SVG
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-
-    // Tworzenie obiektu path
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", res);
-
-    // Dodanie elementu path do elementu SVG
     svg.appendChild(path);
-
-    // Dodanie elementu SVG do body dokumentu HTML
     document.body.appendChild(svg);
 </script>
 </body>
