@@ -143,6 +143,8 @@
     //     return path.join(' ');
     // }
 
+    // ==================
+
     function createRoundedPathString(pathCoords) {
         const path = [];
         const curveRadius = 3;
@@ -225,6 +227,8 @@
         return (180 - angleDegrees) < 90; // TODO: Korekta
         // return true;
     }
+
+    // ==================
 
     const arr = [{x: 0, y: 0}, {x: 50, y: 50}, {x: 100, y: 0}, {x: 100, y: 100}, {x: 0, y: 100}];
     const res = createRoundedPathString(arr);
