@@ -97,9 +97,9 @@
                     path.unshift('M' + c2c3CurvePoint.join(','));
                 }
 
-                // Line to start of curve (L endcoord)
+                // Line to start of curve (L end coord)
                 path.push('L' + c1c2CurvePoint.join(','));
-                // Bezier line around curve (Q controlcoord endcoord)
+                // Bezier line around curve (Q control coord end coord)
                 path.push('Q' + c2.x + ',' + c2.y + ',' + c2c3CurvePoint.join(','));
             } else {
                 // If the angle is acute, draw a straight line
