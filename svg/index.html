@@ -45,9 +45,8 @@
         return obtuseAnglesIndexes;
     }
 
-    function createRoundedPathString(pathCoords, male) {
+    function createRoundedPathString(pathCoords, male, curveRadius) {
         const path = [];
-        const curveRadius = 3;
 
         // Reset indexes, so there are no gaps
         pathCoords = pathCoords.slice();
@@ -134,12 +133,22 @@
         {x: 169.5801104972375, y: 114.8066298342542},
         {x: 117.7513812154696, y: 92.8232044198895},
     ];
+    
+    // Config
     const male = true;
-    const res = createRoundedPathString(arr, male);
+    const onlyLine = true;
+    const curveRadius = 6;
+    
+    const res = createRoundedPathString(arr, male, curveRadius);
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", res);
-    svg.appendChild(path);
+    if (onlyLine) {
+        path.setAttribute("stroke", "black");
+        path.setAttribute("stroke-width", "0.5");
+        path.setAttribute("fill", "none");
+        svg.appendChild(path);
+    }
     document.body.appendChild(svg);
 </script>
 </body>
