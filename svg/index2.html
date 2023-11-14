@@ -9,6 +9,7 @@
             padding: 0;
         }
         svg {
+            z-index: -1;
             position: absolute;
             width: 100vw;
             height: 100vh;
@@ -202,11 +203,14 @@
 
     //#region dat.gui
     const gui = new dat.GUI();
-    gui.add(config, "male").name("Male/Exterior cut");
-    gui.add(config, "onlyLine").name("Only line");
-    gui.add(config, "curveRadius").name("Radius");
-    gui.add(config, "shape", [1, 2]).name("Shape");
-    gui.add(config2, "generate").name("Generate");
+    gui.add(config, "male").name("Male/Exterior cut")
+        .onChange(() => config2.generate());
+    gui.add(config, "onlyLine").name("Only line")
+        .onChange(() => config2.generate());
+    gui.add(config, "curveRadius", 0, 100).name("Radius")
+        .onChange(() => config2.generate());
+    gui.add(config, "shape", [1, 2]).name("Shape")
+        .onChange(() => config2.generate());
     //#endregion
 </script>
 </body>
