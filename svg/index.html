@@ -13,7 +13,7 @@
 <!--</svg>-->
 <script>
     // ==================
-
+    // TODO: Zapewne do usunięcia
     function calculateAngle(p1, p2, p3) {
         // Obliczanie kątów nachylenia odcinków
         const angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x);
@@ -44,6 +44,48 @@
 
     console.log("Kąt między punktami: " + angle + " stopni");
 
+    // ==================
+    // Funkcja pomocnicza do obliczania kąta między trzema punktami
+    function calculateAngle2(p1, p2, p3) {
+        var angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
+        var angleDeg = (angleRad * 180) / Math.PI;
+
+        // Zapewnienie, że kąt jest dodatni
+        if (angleDeg < 0) {
+            angleDeg += 360;
+        }
+
+        return angleDeg;
+    }
+    
+    function findObtuseAngles(vertices) {
+        const obtuseAnglesIndexes = [];
+
+        if (vertices.length < 3) {
+            console.log("Za mało wierzchołków.");
+            return obtuseAnglesIndexes;
+        }
+
+        for (let i = 0; i < vertices.length; i++) {
+            const p1 = vertices[i];
+            const p2 = vertices[(i + 1) % vertices.length]; // Następny wierzchołek (cyklicznie)
+
+            // Poprzedni i następny wierzchołek
+            const p0 = vertices[(i - 1 + vertices.length) % vertices.length];
+            const p3 = vertices[(i + 2) % vertices.length];
+
+            // Obliczanie kąta między trzema punktami (p0, p1, p2)
+            const angle = calculateAngle2(p0, p1, p2);
+
+            // Sprawdzanie, czy kąt jest rozwarty
+            if (angle >= 180) {
+                obtuseAnglesIndexes.push(p1);
+            }
+        }
+
+        console.log("Indeksy wierzchołków, w których występują kąty rozwarte:", obtuseAnglesIndexes);
+        return obtuseAnglesIndexes;
+    }
     // ==================
     
     /**
@@ -98,7 +140,18 @@
         // Logically connect path to starting point again (shouldn't be necessary as path ends there anyway, but seems cleaner)
         path.push('Z');
         // ==========
-        path.splice(2, 1);
+        // for (let i = 0; i < pathCoords.length; i++) {
+        //     // const nextPoint = pathCoords[i < pathCoords.length - 1 ? i + 1 : 0];
+        //     // const previousPoint = pathCoords[i === 0 ? pathCoords.length - 1 : i - 1];
+        //     // const currentPoint = pathCoords[i];
+        //     // const angle = calculateAngle2(nextPoint, currentPoint, previousPoint);
+        //     // console.log("angle", angle, nextPoint, currentPoint, previousPoint);
+        //    
+        //     // path.splice(2, 1);
+        // }
+
+        console.log(findObtuseAngles(pathCoords));
+        
         console.log(path);
         // ==========
 
