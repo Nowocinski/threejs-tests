@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+<body>
+<script>
+    // Helper function to calculate the angle between three points
+    function calculateAngle2(p1, p2, p3) {
+        const angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
+        let angleDeg = (angleRad * 180) / Math.PI;
+
+        // Ensuring that the angle is positive
+        if (angleDeg < 0) {
+            angleDeg += 360;
+        }
+
+        return angleDeg;
+    }
+
+    function findObtuseAngles(vertices) {
+        const obtuseAnglesIndexes = [];
+
+        if (vertices.length < 3) {
+            throw Error("Not enough vertices");
+        }
+
+        for (let i = 0; i < vertices.length; i++) {
+            const p1 = vertices[i];
+            const p2 = vertices[(i + 1) % vertices.length]; // Next vertex (cyclic)
+
+            // Previous and next vertex
+            const p0 = vertices[(i - 1 + vertices.length) % vertices.length];
+
+            // Calculating the angle between three points (p0, p1, p2)
+            const angle = calculateAngle2(p0, p1, p2);
+
+            // Checking whether an angle is obtuse
+            if (angle >= 180) {
+                obtuseAnglesIndexes.push(i);
+            }
+        }
+
+        return obtuseAnglesIndexes;
+    }
+
+    function createRoundedPathString(pathCoords, male, curveRadius) {
+        const path = [];
+
+        // Reset indexes, so there are no gaps
+        pathCoords = pathCoords.slice();
+
+        const obtuseAngles = findObtuseAngles(pathCoords);
+
+        // Alignment of data under modified SVG object
+        const obtuseAngles2 = obtuseAngles.map(obtuseAngle => obtuseAngle - 1);
+        if (obtuseAngles2[0] === -1) {
+            obtuseAngles2.shift(); // deleting the first element of the array
+            obtuseAngles2.push(pathCoords.length - 1); // and adding the deleted item to the end with the corrected index
+        }
+
+        for (let i = 0; i < pathCoords.length; i++) {
+            // 1. Get current coord and the next two (start point, corner point, endpoint) to calculate rounded curve
+            const c2Index = (i + 1) % pathCoords.length;
+            const c3Index = (i + 2) % pathCoords.length;
+
+            const c1 = pathCoords[i];
+            const c2 = pathCoords[c2Index];
+            const c3 = pathCoords[c3Index];
+
+            // 2. For each 3 coords, enter two new path commands: Line to start of curve, bezier curve around corner.
+
+            // Check if the angle is obtuse
+            const isObtuse = male
+                ? !obtuseAngles2.includes(i)
+                : obtuseAngles2.includes(i);
+
+            if (isObtuse) {
+                // Calculate curvePoint c1 -> c2
+                const c1c2Distance = Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2));
+                const c1c2DistanceRatio = (c1c2Distance - curveRadius) / c1c2Distance;
+                const c1c2CurvePoint = [
+                    ((1 - c1c2DistanceRatio) * c1.x + c1c2DistanceRatio * c2.x).toFixed(1),
+                    ((1 - c1c2DistanceRatio) * c1.y + c1c2DistanceRatio * c2.y).toFixed(1),
+                ];
+
+                // Calculate curvePoint c2 -> c3
+                const c2c3Distance = Math.sqrt(Math.pow(c2.x - c3.x, 2) + Math.pow(c2.y - c3.y, 2));
+                const c2c3DistanceRatio = curveRadius / c2c3Distance;
+                const c2c3CurvePoint = [
+                    ((1 - c2c3DistanceRatio) * c2.x + c2c3DistanceRatio * c3.x).toFixed(1),
+                    ((1 - c2c3DistanceRatio) * c2.y + c2c3DistanceRatio * c3.y).toFixed(1),
+                ];
+
+                // If at last coord of polygon, also save that as starting point
+                if (i === pathCoords.length - 1) {
+                    path.unshift('M' + c2c3CurvePoint.join(','));
+                }
+
+                // Line to start of curve (L end coord)
+                path.push('L' + c1c2CurvePoint.join(','));
+                // Bezier line around curve (Q control coord end coord)
+                path.push('Q' + c2.x + ',' + c2.y + ',' + c2c3CurvePoint.join(','));
+            } else {
+                // If the angle is acute, draw a straight line
+                if (i === pathCoords.length - 1) {
+                    path.unshift('M' + c2.x + ',' + c2.y);
+                }
+                path.push('L' + c2.x + ',' + c2.y);
+            }
+        }
+        // Logically connect path to starting point again (shouldn't be necessary as path ends there anyway, but seems cleaner)
+        path.push('Z');
+
+        return path.join(' ');
+    }
+
+    const arr = [
+        // {x: 50, y: 50},
+        // {x: 0, y: 0},
+        // {x: 100, y: 0},
+        // {x: 100, y: 100},
+        // {x: 0, y: 100},
+
+        {x: 94.7955801104972, y: 116.6077348066299},
+        {x: 48.5414364640884, y: 87.9060773480663},
+        {x: 91.3370165745856, y: 77.9005524861878},
+        {x: 83.646408839779, y: 31.646408839779},
+        {x: 115.779005524862, y: 54.2872928176796},
+        {x: 171.3812154696132, y: 32.1325966850829},
+        {x: 148.0828729281768, y: 70.182320441989},
+        {x: 169.5801104972375, y: 114.8066298342542},
+        {x: 117.7513812154696, y: 92.8232044198895},
+    ];
+
+    // Config
+    const male = true;
+    const onlyLine = true;
+    const curveRadius = 6;
+
+    const res = createRoundedPathString(arr, male, curveRadius);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", res);
+    if (onlyLine) {
+        path.setAttribute("stroke", "black");
+        path.setAttribute("stroke-width", "0.5");
+        path.setAttribute("fill", "none");
+        svg.appendChild(path);
+    }
+    document.body.appendChild(svg);
+</script>
+</body>
+</html>
