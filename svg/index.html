@@ -47,8 +47,8 @@
     // ==================
     // Funkcja pomocnicza do obliczania kąta między trzema punktami
     function calculateAngle2(p1, p2, p3) {
-        var angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
-        var angleDeg = (angleRad * 180) / Math.PI;
+        const angleRad = Math.atan2(p3.y - p2.y, p3.x - p2.x) - Math.atan2(p1.y - p2.y, p1.x - p2.x);
+        let angleDeg = (angleRad * 180) / Math.PI;
 
         // Zapewnienie, że kąt jest dodatni
         if (angleDeg < 0) {
