@@ -98,6 +98,8 @@
 
         // Reset indexes, so there are no gaps
         pathCoords = pathCoords.slice();
+        
+        const obtuseAngles = findObtuseAngles(pathCoords);
 
         for (let i = 0; i < pathCoords.length; i++) {
 
@@ -150,7 +152,7 @@
         //     // path.splice(2, 1);
         // }
 
-        console.log(findObtuseAngles(pathCoords));
+        console.log(obtuseAngles);
         console.log(path);
         // ==========
 
