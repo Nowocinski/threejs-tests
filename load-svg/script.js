@@ -55,7 +55,7 @@ window.addEventListener('resize', function() {
 });
 
 const loader = new SVGLoader();
-loader.loadAsync("testowy3.svg")
+loader.loadAsync("testowy2.svg")
     .then(
         (data) => {
         const paths = data.paths;
@@ -63,7 +63,8 @@ loader.loadAsync("testowy3.svg")
         for ( let i = 0; i < paths.length; i ++ ) {
             const path = paths[ i ];
             const material = new MeshBasicMaterial( {
-                color: path.color,
+                // color: path.color,
+                color: 'red',
                 side: DoubleSide,
                 depthWrite: false
             } );
