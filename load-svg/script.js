@@ -20,7 +20,7 @@ document.body.appendChild(renderer.domElement);
 renderer.setClearColor(0xFEFEFE);
 
 const scene = new Scene();
-const camera = new /*PerspectiveCamera*/OrthographicCamera(
+const camera = new PerspectiveCamera/*OrthographicCamera*/(
     45,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -55,7 +55,7 @@ window.addEventListener('resize', function() {
 });
 
 const loader = new SVGLoader();
-loader.loadAsync("testowy.svg")
+loader.loadAsync("testowy2.svg")
     .then(
         (data) => {
         const paths = data.paths;

@@ -197,6 +197,8 @@
         }
         svg.appendChild(path);
         document.body.appendChild(svg);
+        
+        console.log(new XMLSerializer().serializeToString(svg));
     };
     addSvgToHtml();
     
