@@ -57,10 +57,9 @@ window.addEventListener('resize', function() {
 
 // Przykładowy ciąg znaków SVG
 const svgString = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-    <rect x="10" y="10" width="80" height="80" fill="blue" />
-    <circle cx="50" cy="50" r="30" fill="red" />
-  </svg>
+<svg xmlns="http://www.w3.org/2000/svg" id="svg">
+    <path d="M207.6,207.6 L0,0 L500,0 L500,400 L400,500 L0,500 L207.6,292.4 Q250,250,207.6,207.6 Z" stroke="red"/>
+</svg>
 `;
 
 // Utwórz instancję SVGLoader
