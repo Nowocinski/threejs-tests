@@ -55,7 +55,7 @@ window.addEventListener('resize', function() {
 });
 
 const loader = new SVGLoader();
-loader.loadAsync("testowy2.svg")
+loader.loadAsync("testowy3.svg")
     .then(
         (data) => {
         const paths = data.paths;
