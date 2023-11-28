@@ -66,6 +66,19 @@
 
         return obtuseAnglesIndexes;
     }
+    
+    function distance(x1, y1, x2, y2) {
+        // Obliczenie różnic w osiach x i y
+        const diffX = x2 - x1;
+        const diffY = y2 - y1;
+
+        // Obliczenie kwadratów różnic
+        const diffXSquared = diffX * diffX;
+        const diffYSquared = diffY * diffY;
+
+        // Obliczenie odległości jako pierwiastek sumy kwadratów różnic
+        return Math.sqrt(diffXSquared + diffYSquared);
+    }
 
     function createRoundedPathString(pathCoords, male, curveRadius) {
         const path = [];
@@ -90,6 +103,8 @@
             const c1 = pathCoords[i];
             const c2 = pathCoords[c2Index];
             const c3 = pathCoords[c3Index];
+            
+            const dis = distance(c1.x, c1.y, c3.x, c3.y);
 
             // 2. For each 3 coords, enter two new path commands: Line to start of curve, bezier curve around corner.
 
@@ -98,7 +113,7 @@
                 ? !obtuseAngles2.includes(i)
                 : obtuseAngles2.includes(i);
 
-            if (isObtuse) {
+            if (isObtuse && dis > 25) {
                 // Calculate curvePoint c1 -> c2
                 const c1c2Distance = Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2));
                 const c1c2DistanceRatio = (c1c2Distance - curveRadius) / c1c2Distance;
@@ -359,12 +374,86 @@
         ];
         
         const arr2 = [
-            {x: 50, y: 50},
-            {x: 0, y: 0},
-            {x: 100, y: 0},
-            {x: 100, y: 80},
-            {x: 80, y: 100},
-            {x: 0, y: 100}
+            {
+                x: 705.5230102539062,
+                y: 1211.1390380859375
+            },
+            {
+                x: 692.0859985351562,
+                y: 1440.33203125
+            },
+            {
+                x: 631.905029296875,
+                y: 1586.386962890625
+            },
+            {
+                x: 774.4650268554688,
+                y: 1553.0789794921875
+            },
+            {
+                x: 947.72998046875,
+                y: 1704.4000244140625
+            },
+            {
+                x: 1217.510009765625,
+                y: 1553.114990234375
+            },
+            {
+                x: 1617.52001953125,
+                y: 1671.886962890625
+            },
+            {
+                x: 1774.0699462890625,
+                y: 1359.3270263671875
+            },
+            {
+                x: 1479.5899658203125,
+                y: 821.7100219726562
+            },
+            {
+                x: 1289.9100341796875,
+                y: 1398.178955078125
+            },
+            {
+                x: 1201.219970703125,
+                y: 1426.6180419921875
+            },
+            {
+                x: 1132.9000244140625,
+                y: 899.2100219726562
+            },
+            {
+                x: 1075.199951171875,
+                y: 1442.031005859375
+            },
+            {
+                x: 1005.1500244140625,
+                y: 1436.9339599609375
+            },
+            {
+                x: 986.0280151367188,
+                y: 1009.3300170898438
+            },
+            {
+                x: 924.6170043945312,
+                y: 1443.2359619140625
+            },
+            {
+                x: 865.8460083007812,
+                y: 1452.93701171875
+            },
+            {
+                x: 844.5399780273438,
+                y: 1099.4169921875
+            },
+            {
+                x: 802.3140258789062,
+                y: 1455.491943359375
+            },
+            {
+                x: 739.1199951171875,
+                y: 1479.52099609375
+            }
         ];
         
         let arr;
@@ -383,15 +472,15 @@
         svg.setAttribute("id", "svg");
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", res);
-        path.setAttribute("stroke", "red");
-        if (config.onlyLine) {
-            path.setAttribute("stroke-width", "0.5");
-            path.setAttribute("fill", "none");
-        }
+        // path.setAttribute("stroke", "red");
+        // if (config.onlyLine) {
+        //     path.setAttribute("stroke-width", "0.5");
+        //     path.setAttribute("fill", "none");
+        // }
         svg.appendChild(path);
         document.body.appendChild(svg);
         
-        console.log(new XMLSerializer().serializeToString(svg));
+        // console.log(new XMLSerializer().serializeToString(svg));
     };
     addSvgToHtml();
     
@@ -400,8 +489,8 @@
     const gui = new dat.GUI();
     gui.add(config, "male").name("Male/Exterior cut")
         .onChange(() => config2.generate());
-    gui.add(config, "onlyLine").name("Only line")
-        .onChange(() => config2.generate());
+    // gui.add(config, "onlyLine").name("Only line")
+    //     .onChange(() => config2.generate());
     gui.add(config, "curveRadius", 0, 200).name("Radius")
         .onChange(() => config2.generate());
     gui.add(config, "shape", [1, 2]).name("Shape")
