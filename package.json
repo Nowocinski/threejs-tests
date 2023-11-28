@@ -12,6 +12,6 @@
   "dependencies": {
     "@types/three": "^0.155.0",
     "dat.gui": "^0.7.9",
-    "three": "^0.155.0"
+    "three": "^0.158.0"
   }
 }

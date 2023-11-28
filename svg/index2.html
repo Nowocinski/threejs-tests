@@ -42,6 +42,7 @@
     }
 
     function findObtuseAngles(vertices) {
+        console.log(vertices);
         const obtuseAnglesIndexes = [];
 
         if (vertices.length < 3) {
@@ -468,6 +469,7 @@
 
         arr.forEach(ele => {ele.x /= 3; ele.y /= 3;})
         const res = createRoundedPathString(arr, config.male, config.curveRadius);
+        console.log(res);
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("id", "svg");
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
